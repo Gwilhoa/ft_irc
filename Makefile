@@ -1,11 +1,11 @@
 NAME		:= ft_irc
-SRCS_LST	:= main.cpp
+SRCS_LST	:= main.cpp utils.cpp
 SRCS_FILE	:= sources
 
 OBJS_FILE	:= .objects
 OBJS_LST	:= $(SRCS_LST:.cpp=.o)
 
-INC_LST		:= 
+INC_LST		:= ft_irc.hpp
 INC_FILE	:= includes
 
 CC			:= c++
@@ -16,16 +16,17 @@ RM			:= rm -rf
 
 
 SRCS		:= $(addprefix $(SRCS_FILE)/,$(SRCS_LST))
-OBJS		:= $(addprefix $(OBJS_FILE)/,$(SRCS_LST))
+OBJS		:= $(addprefix $(OBJS_FILE)/,$(OBJS_LST))
+INCS		:= $(addprefix $(INC_FILE)/,$(INC_LST))
 
 all:		$(NAME)
 
-$(OBJ_FILE)/%.o : $(SRCS_FILE)/%.cpp $(INC_LST)| $(OBJ_FILE)
+$(OBJS_FILE)/%.o : $(SRCS_FILE)/%.cpp $(INCS) | $(OBJS_FILE)
 				$(CC) $(FLAGS) -c $< -o $@ $(INC_FILE)
 
 
-$(NAME) :	$(OBJS) Makefile $(INC_LST)
-				$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(INC_FILE)
+$(NAME) :	$(OBJS) Makefile $(INCS)
+				$(CC) $(FLAGS) -o $(NAME) $(OBJS) -I$(INC_FILE)
 clean	:
 				$(RM) $(OBJS_FILE)
 fclean	:	clean
@@ -34,3 +35,5 @@ $(OBJS_FILE):
 				mkdir $(OBJS_FILE)
 
 re		:	fclean all
+
+.PHONY	:	all clean fclean re
