@@ -23,7 +23,9 @@ void accept_connexion(int server_fd){
 		std::cout << "Error: accept failed" << std::endl;
 	}
 	std::cout << "New connection" << std::endl;
+	while (1){
 
+	}
 }
 
 void initialize_server(int port, std::string password) {
