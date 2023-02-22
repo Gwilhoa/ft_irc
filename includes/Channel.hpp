@@ -1,0 +1,8 @@
+class Channel
+{
+    
+    private:
+
+    public:
+
+}

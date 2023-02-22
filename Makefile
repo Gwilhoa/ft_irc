@@ -1,9 +1,8 @@
 NAME		:= ft_irc
-SRCS_LST	:= main.cpp utils.cpp Server.cpp User.cpp
+
+SRCS_LST	:= main.cpp utils.cpp Server.cpp User.cpp cmd/nick.cpp
 SRCS_FILE	:= sources
 
-OBJS_FILE	:= .objects
-OBJS_LST	:= $(SRCS_LST:.cpp=.o)
 
 INC_LST		:= ft_irc.hpp Server.hpp User.hpp
 INC_FILE	:= includes
@@ -12,6 +11,8 @@ CC			:= c++
 FLAGS		:= -std=c++98 -Werror -Wall -Wextra
 RM			:= rm -rf
 
+OBJS_LST	:= $(SRCS_LST:.cpp=.o)
+OBJS_FILE	:= .objects
 
 
 

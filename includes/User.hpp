@@ -1,4 +1,5 @@
 
+
 #ifndef User_HPP
 # define User_HPP
 #include "../includes/ft_irc.hpp"
@@ -23,4 +24,3 @@ private :
         std::string getNickname() const;
 };
 #endif
-
