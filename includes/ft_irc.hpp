@@ -5,6 +5,10 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <cstdlib>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <map>
+#include <poll.h>
 
 std::string to_string(char *str);
 #endif
