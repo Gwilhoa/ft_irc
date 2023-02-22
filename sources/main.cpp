@@ -12,51 +12,51 @@
 
 
 
+#include <unistd.h>
 #include "../includes/ft_irc.hpp"
+#include "../includes/Server.hpp"
+#include "../includes/User.hpp"
 
-void accept_connexion(int server_fd){
-	int new_socket;
-	struct sockaddr_in address;
-	int addrlen = sizeof(address);
-	new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
-	if (new_socket < 0) {
-		std::cout << "Error: accept failed" << std::endl;
-	}
-	std::cout << "New connection" << std::endl;
-	while (1){
 
-	}
-}
-
-void initialize_server(int port, std::string password) {
-	int server_fd;
-	struct sockaddr_in address;
-	server_fd = socket(AF_INET, SOCK_STREAM, 0);
-	if (server_fd == -1) {
-		std::cout << "Error: socket creation failed" << std::endl;
-		exit(1);
-	}
-	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = INADDR_ANY;
-	address.sin_port = htons(port);
-	if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
-		std::cout << "Error: bind failed" << std::endl;
-		exit(1);
-	}
-	listen(server_fd, 3);
-	std::cout << "Server started on port " << port << std::endl;
-	std::cout << "Password: " << password << std::endl;
-	accept_connexion(server_fd);
-
-}
 int main(int argc, char *argv[])
 {
 	if (argc == 3) {
-		std::string password = to_string(argv[2]);
-        initialize_server(atoi(argv[1]), password);
+		Server server = Server(atoi(argv[1]), to_string(argv[2]));
+		if (server.init() == 1)
+			exit(1);
+        while (true)
+        {
+            pollfd *fds = server.getPollFds();
+            std::cout << "en attente..." << std::endl;
+            int ret = poll(fds, server.getConnectedUsers().size() + 1, -1);
+            std::cout << "processing..." << std::endl;
+            if (ret < 0) {
+                std::cout << "poll error" << std::endl;
+                exit(1);
+            }
+            size_t i = 0;
+            while (i < server.getConnectedUsers().size() + 1)
+            {
+                if (fds[i].revents & POLLIN)
+                {
+                    if (i == 0)
+                    {
+                        server.accept_connexion();
+                    }
+                    else {
+                        char buffer[1024];
+                        int n = recv(server.getPollFds()[i].fd, buffer, 1024, 0);
+                        if (n == 0) {
+                            server.disconectUser(server.getPollFds()[i].fd);
+                        }
+                        buffer[n] = '\0';
+                        std::cout << buffer << std::endl;
+                    }
+                }
+                i++;
+            }
+        }
 	} else {
 		std::cout << "usage ./ft_irc [port]" << std::endl;
 	}
 }
-
-

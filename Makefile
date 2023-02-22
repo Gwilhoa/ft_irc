@@ -1,7 +1,8 @@
 NAME		:= ft_irc
 
-SRCS_LST	:= main.cpp utils.cpp cmd/nick.cpp
+SRCS_LST	:= main.cpp utils.cpp Server.cpp User.cpp cmd/nick.cpp
 SRCS_FILE	:= sources
+
 
 INC_LST		:= ft_irc.hpp Server.hpp User.hpp
 INC_FILE	:= includes
