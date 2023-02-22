@@ -1,6 +1,7 @@
 NAME		:= ft_irc
 
-SRCS_LST	:= main.cpp utils.cpp Server.cpp User.cpp cmd/nick.cpp
+CMD_LST		:= Nick.cpp
+SRCS_LST	:= $(addprefix cmd/,$(CMD_LST)) main.cpp utils.cpp Server.cpp User.cpp
 SRCS_FILE	:= sources
 
 
@@ -34,6 +35,7 @@ fclean	:	clean
 				$(RM) $(NAME)
 $(OBJS_FILE):
 				mkdir $(OBJS_FILE)
+				mkdir $(OBJS_FILE)/cmd
 
 re		:	fclean all
 

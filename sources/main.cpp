@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
                         char buffer[1024];
                         int n = recv(server.getPollFds()[i].fd, buffer, 1024, 0);
                         if (n == 0) {
-                            server.disconectUser(server.getPollFds()[i].fd);
+                            server.disconnectUser(server.getPollFds()[i].fd);
                         }
                         buffer[n] = '\0';
                         std::cout << buffer << std::endl;

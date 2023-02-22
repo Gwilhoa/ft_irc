@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_irc.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gchatain <gchatain@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/22 14:35:54 by gchatain          #+#    #+#             */
+/*   Updated: 2023/02/22 14:35:55 by gchatain         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_IRC_H
 # define FT_IRC_H
 #include <iostream>
@@ -9,6 +21,10 @@
 #include <arpa/inet.h>
 #include <map>
 #include <poll.h>
+#include <vector>
 
+class User;
 std::string to_string(char *str);
+void privatemsg(User &receiver, const std::string& msg, const std::string& name);
+int	nick(User &user, const std::string& new_nick);
 #endif

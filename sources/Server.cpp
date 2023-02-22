@@ -1,19 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Server.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gchatain <gchatain@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/22 14:36:17 by gchatain          #+#    #+#             */
+/*   Updated: 2023/02/22 14:36:19 by gchatain         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 
 #include "../includes/Server.hpp"
 #include "../includes/User.hpp"
 
-Server::Server()
+Server::Server() : _port(), _server_fd()
 {
 	Server(3000, "test");
 }
 
-Server::Server(int port, std::string password) : _port(port), _password(password)
+Server::Server(int port, const std::string& password) : _port(port), _password(password), _server_fd()
 {
 	_connected_users = std::map <int, User>();
 }
 
-Server::Server(const Server &c)
+Server::Server(const Server &c) : _port(), _server_fd()
 {
 	*this = c;
 }
@@ -33,7 +45,7 @@ Server & Server::operator=(const Server &c)
 
 int Server::init()
 {
-	struct sockaddr_in address;
+	struct sockaddr_in address = {};
 	int opt = 1;
 
 	if ((_server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
@@ -61,7 +73,7 @@ int Server::init()
 
 int Server::accept_connexion(){
 	int fd_user;
-	struct sockaddr_in address;
+	struct sockaddr_in address = {};
 	int addrlen = sizeof(address);
 	fd_user = accept(this->_server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
 	if (fd_user < 0) {
@@ -73,7 +85,7 @@ int Server::accept_connexion(){
 	return 0;
 }
 
-int Server::disconectUser(int fd)
+int Server::disconnectUser(int fd)
 {
     std::cout << "User " << _connected_users[fd].getNickname() << " disconnected" << std::endl;
     _connected_users.erase(fd);
@@ -94,6 +106,38 @@ struct pollfd *Server::getPollFds()
     }
     return fds;
 }
+
+std::vector <Channel> Server::getChannels() const
+{
+    return this->_channels;
+}
+
+Channel &Server::getChannelByName(const std::string &name)
+{
+    for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
+    {
+        if (it->getName() == name)
+            return *it;
+    }
+    return NULL;
+}
+
+void Server::addChannel(const std::string &name)
+{
+    _channels.push_back(Channel(name));
+}
+void Server::removeChannel(const std::string &name)
+{
+    for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
+    {
+        if (it->getName() == name)
+        {
+            _channels.erase(it);
+            return;
+        }
+    }
+}
+
 //getters and setters
 
 int	Server::getPort() const
