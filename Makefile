@@ -1,7 +1,7 @@
 NAME		:= ft_irc
 
 CMD_LST		:= 
-SRCS_LST	:= $(addprefix cmd/,$(CMD_LST)) main.cpp utils.cpp Server.cpp User.cpp
+SRCS_LST	:= $(addprefix cmd/,$(CMD_LST)) main.cpp utils.cpp Server.cpp User.cpp Channel.cpp
 SRCS_FILE	:= sources
 
 
