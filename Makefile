@@ -1,15 +1,15 @@
 NAME		:= ft_irc
 
-CMD_LST		:= Nick.cpp
+CMD_LST		:= 
 SRCS_LST	:= $(addprefix cmd/,$(CMD_LST)) main.cpp utils.cpp Server.cpp User.cpp
 SRCS_FILE	:= sources
 
 
-INC_LST		:= ft_irc.hpp Server.hpp User.hpp
+INC_LST		:= ft_irc.hpp Server.hpp User.hpp Channel.hpp
 INC_FILE	:= includes
 
 CC			:= c++
-FLAGS		:= -std=c++98 -Werror -Wall -Wextra
+FLAGS		:= -std=c++98
 RM			:= rm -rf
 
 OBJS_LST	:= $(SRCS_LST:.cpp=.o)

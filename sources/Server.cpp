@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gchatain <gchatain@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: guilheimchataing <guilheimchataing@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:36:17 by gchatain          #+#    #+#             */
-/*   Updated: 2023/02/22 14:36:19 by gchatain         ###   ########.fr       */
+/*   Updated: 2023/02/25 11:22:47 by guilheimcha      ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 #include "../includes/Server.hpp"
 #include "../includes/User.hpp"
+#include "../includes/Channel.hpp"
 
+class Channel;
 Server::Server() : _port(), _server_fd()
 {
 	Server(3000, "test");
@@ -119,7 +121,7 @@ Channel &Server::getChannelByName(const std::string &name)
         if (it->getName() == name)
             return *it;
     }
-    return NULL;
+	return *_channels.begin();
 }
 
 void Server::addChannel(const std::string &name)
