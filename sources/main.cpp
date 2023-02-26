@@ -57,6 +57,6 @@ int main(int argc, char *argv[])
             }
         }
 	} else {
-		std::cout << "usage ./ft_irc [port]" << std::endl;
+		std::cout << "usage ./ft_irc [port] [password]" << std::endl;
 	}
 }

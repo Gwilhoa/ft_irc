@@ -22,7 +22,7 @@ Channel::Channel()
     _users = std::vector<User>();
 }
 
-Channel::Channel(const std::string &name) : _name(name)
+Channel::Channel(const std::string &name, Server *myCurrentServer) : _name(name), _myCurrentServer(myCurrentServer)
 {
     _users = std::vector<User>();
 }
@@ -55,6 +55,7 @@ std::vector <User> Channel::getUsers() const
 void Channel::addUser(User &user)
 {
     _users.push_back(user);
+    user.myCurrentChannel = this;
 }
 
 void Channel::removeUser(User &user)

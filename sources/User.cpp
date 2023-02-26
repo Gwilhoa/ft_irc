@@ -19,12 +19,9 @@ User::User()
 
 }
 
-User::User(int fd, struct sockaddr_in addr)
+User::User(int fd, struct sockaddr_in addr, Server *myCurrentServer) : 
+myCurrentChannel(NULL), _fd(fd), _port(addr.sin_port), _addr(addr.sin_addr.s_addr), _nickname("default"), _myCurrentServer(myCurrentServer)
 {
-	_fd = fd;
-	_port = addr.sin_port;
-	_addr = addr.sin_addr.s_addr;
-	_nickname = "default";
 }
 
 User::User(const User &c)
@@ -83,4 +80,3 @@ void User::setNickname(const std::string &newName)
 {
     this->_nickname = newName;
 }
-

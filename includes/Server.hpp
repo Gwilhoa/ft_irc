@@ -13,17 +13,18 @@
 #ifndef Server_HPP
 # define Server_HPP
 #include "../includes/ft_irc.hpp"
-#include "Channel.hpp"
-
+//#include "../includes/Channel.hpp"
+class Channel;
 class User;
+
 class Server
 {
 	private :
-	int _port;
-	std::string _password;
-	int _server_fd;
-	std::map <int, User> _connected_users;
-    std::vector <Channel> _channels;
+		int _port;
+		std::string _password;
+		int _server_fd;
+		std::map <int, User> _connected_users;
+		std::vector <Channel> _channels;
 
 	public :
 		Server(int port, const std::string& password);
@@ -42,7 +43,8 @@ class Server
 		std::map <int, User> getConnectedUsers() const;
         struct pollfd *getPollFds();
         std::vector <Channel> getChannels() const;
-        void addChannel(const std::string &name);
+		Channel *getChannel(std::string name);
+        Channel addChannel(const std::string name);
         void removeChannel(const std::string &name);
         Channel &getChannelByName(const std::string &name);
 };

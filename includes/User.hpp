@@ -14,18 +14,22 @@
 
 #ifndef User_HPP
 # define User_HPP
-#include "../includes/ft_irc.hpp"
+# include "../includes/ft_irc.hpp"
+
+//# include "Channel.hpp"
 class User
 {
-private :
-	int _fd;
-	int _port;
-	int _addr;
-	std::string _nickname;
-    std::string _username;
+	private :
+		int _fd;
+		int _port;
+		int _addr;
+		std::string _nickname;
+		std::string _username;
+
 	public :
+		Server *_myCurrentServer;
 		User();
-		User(int fd, struct sockaddr_in addr);
+		User(int fd, struct sockaddr_in addr, Server *myCurrentServer);
 		User(const User &c);
 		~User();
 		User & operator=(const User &c);
@@ -37,5 +41,7 @@ private :
         int getAddr() const;
         std::string getNickname() const;
         void setNickname(const std::string &newName);
+		void setCurrentChannel();
+		Channel *myCurrentChannel;
 };
 #endif

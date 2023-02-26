@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PrivateMsg.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gchatain <gchatain@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: ajossera <ajossera@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/22 14:36:12 by gchatain          #+#    #+#             */
-/*   Updated: 2023/02/22 14:36:13 by gchatain         ###   ########.fr       */
+/*   Created: 2023/02/22 14:36:12 by ajossera          #+#    #+#             */
+/*   Updated: 2023/02/22 14:36:13 by ajossera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

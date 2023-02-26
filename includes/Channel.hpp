@@ -13,14 +13,18 @@
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP
 #include "../includes/ft_irc.hpp"
+//#include "Server.hpp"
+
 class Channel
 {
     private:
-        std::string _name;
-        std::vector <User> _users;
+        std::string         _name;
+        std::vector<User >  _users;
+        const Server        *_myCurrentServer;
+
     public:
         Channel();
-        Channel(const std::string &name);
+        Channel(const std::string &name, Server *myCurrentServer);
         Channel(const Channel &c);
         ~Channel();
         Channel & operator=(const Channel &c);
@@ -30,7 +34,6 @@ class Channel
         void addUser(User &user);
         void removeUser(User &user);
         void sendMsg(const std::string &msg);
-
 };
 
 #endif

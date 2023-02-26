@@ -82,7 +82,7 @@ int Server::accept_connexion(){
 		std::cout << "Error: accept failed" << std::endl;
 		return 1;
 	}
-	_connected_users[fd_user] = User(fd_user, address);
+	_connected_users[fd_user] = User(fd_user, address, this);
 	std::cout << "New connection " <<  inet_ntoa(address.sin_addr) << ":" << ntohs(address.sin_port) << " : " << address.sin_family << " (" << fd_user << ")" << std::endl;
 	return 0;
 }
@@ -92,6 +92,15 @@ int Server::disconnectUser(int fd)
     std::cout << "User " << _connected_users[fd].getNickname() << " disconnected" << std::endl;
     _connected_users.erase(fd);
     return 0;
+}
+
+Channel* Server::getChannel(std::string name)
+{
+	for (std::vector<Channel>::iterator i = _channels.begin(); i != _channels.end(); i++){
+		if (i->getName() == name)
+			return (&(*i));
+	}
+	return NULL;
 }
 
 struct pollfd *Server::getPollFds()
@@ -124,9 +133,11 @@ Channel &Server::getChannelByName(const std::string &name)
 	return *_channels.begin();
 }
 
-void Server::addChannel(const std::string &name)
+Channel Server::addChannel(const std::string name)
 {
-    _channels.push_back(Channel(name));
+	Channel	newchan(name, this);
+    _channels.push_back(newchan);
+	return newchan;
 }
 void Server::removeChannel(const std::string &name)
 {

@@ -12,18 +12,25 @@
 
 #ifndef FT_IRC_H
 # define FT_IRC_H
-#include <iostream>
-#include <string>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <cstdlib>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <map>
-#include <poll.h>
-#include <vector>
+# include <iostream>
+# include <string>
+# include <sys/socket.h>
+# include <netinet/in.h>
+# include <cstdlib>
+# include <arpa/inet.h>
+# include <map>
+# include <poll.h>
+# include <vector>
 
+
+class Server;
+class Channel;
 class User;
+
+# include "User.hpp"
+# include "Channel.hpp"
+# include "Server.hpp"
+
 std::string to_string(char *str);
 void privatemsg(User &receiver, const std::string& msg, const std::string& name);
 int	nick(User &user, const std::string& new_nick);
