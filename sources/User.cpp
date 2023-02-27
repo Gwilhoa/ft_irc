@@ -80,3 +80,7 @@ void User::setNickname(const std::string &newName)
 {
     this->_nickname = newName;
 }
+
+bool User::operator==(const User &rhs) const {
+    return _fd == rhs._fd;
+}

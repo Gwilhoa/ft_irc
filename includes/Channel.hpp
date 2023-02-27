@@ -13,13 +13,13 @@
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP
 #include "../includes/ft_irc.hpp"
-//#include "Server.hpp"
 
+class User;
 class Channel
 {
     private:
         std::string             _name;
-        std::vector<User >      _users;
+        std::map<int, User>     _users;
         const Server            *_myCurrentServer;
         std::vector<Message>    _messages;
 
@@ -31,19 +31,12 @@ class Channel
         Channel & operator=(const Channel &c);
         //getters and setters
         std::string getName() const;
-        std::vector <User> getUsers() const;
+        std::map <int, User> getUsers() const;
         void addUser(User &user);
         void removeUser(User &user);
         void sendMsg(const std::string &msg);
         
-        User *getUserByName(const std::string &userName){
-            std::vector<User>::iterator myIt = _users.begin();     
-            for (; myIt != _users.end(); myIt++){
-                if ((*myIt).getUsername() == userName)
-                    return (&(*myIt));
-            }
-            return NULL;
-        }
+        User *getUserByName(const std::string &userName) const;
 
         bool removeUser(const std::string userName){
             if (getUserByName(userName)){

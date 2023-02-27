@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
                         }
                         buffer[n] = '\0';
                         std::cout << buffer << std::endl;
+                        defineCommand(server.getConnectedUsers()[server.getPollFds()[i].fd], buffer);
                     }
                 }
                 i++;

@@ -19,12 +19,12 @@ class User;
 Channel::Channel()
 {
     _name = "";
-    _users = std::vector<User>();
+    _users = std::map<int, User>();
 }
 
 Channel::Channel(const std::string &name, Server *myCurrentServer) : _name(name), _myCurrentServer(myCurrentServer)
 {
-    _users = std::vector<User>();
+    _users = std::map<int, User>();
 }
 
 Channel::Channel(const Channel &c)
@@ -47,36 +47,34 @@ std::string Channel::getName() const
     return (_name);
 }
 
-std::vector <User> Channel::getUsers() const
+std::map <int, User> Channel::getUsers() const
 {
     return (_users);
 }
 
-void Channel::addUser(User &user)
-{
-    if (find(_users, user) == _users.end())
-    {
-        _users.push_back(user);
-        user.myCurrentChannel = this;
-    }
-    else
-        std::cout << "User yet inside the channel" << std::endl;
+void Channel::addUser(User &user) {
+    _users[user.getFd()] = user;
 }
 
 void Channel::removeUser(User &user)
 {
-    if (find(_users, user) != _users.end())
-        _users.erase(find(_users, user));
-    else
+    if (_users.erase(user.getFd()) == 0)
         std::cout << "User not found" << std::endl;
 }
 
 void Channel::sendMsg(const std::string &msg)
 {
-    std::vector<User>::iterator it = _users.begin();
-    while (it != _users.end())
+    for (std::map<int, User>::iterator it = _users.begin(); it != _users.end(); it++)
     {
-        it->sendMsg(msg);
-        it++;
+        it->second.sendMsg(msg);
     }
+}
+
+User *Channel::getUserByName(const std::string &userName) const {
+    for (std::map<int, User>::const_iterator it = _users.begin(); it != _users.end(); it++)
+    {
+        if (it->second.getUsername() == userName)
+            return (const_cast<User *>(&it->second));
+    }
+    return (NULL);
 }

@@ -15,8 +15,9 @@
 #ifndef User_HPP
 # define User_HPP
 # include "../includes/ft_irc.hpp"
+# include "../includes/Channel.hpp"
+# include "../includes/Server.hpp"
 
-//# include "Channel.hpp"
 class User
 {
 	private :
@@ -44,7 +45,6 @@ class User
 		std::string getUsername() const {return _username;}
 		void setCurrentChannel();
 		Channel *myCurrentChannel;
-
-		bool operator==(const User& rhs) const {return _fd == rhs._fd; }
+		bool operator==(const User& rhs) const;
 };
 #endif

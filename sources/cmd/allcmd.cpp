@@ -1,5 +1,4 @@
 #include "../../includes/ft_irc.hpp"
-#include "../../includes/User.hpp"
 
 typedef struct s_command {
     std::string str;
