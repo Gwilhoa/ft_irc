@@ -13,7 +13,7 @@ class Message
         Message(std::string str, User        *creator, Channel     *myCurrentChannel) :
         _str(str), _creator(creator), _myCurrentChannel(myCurrentChannel)
         {
-            std::cout << creator->getNickname() << " say " << str << " on " << myCurrentChannel->getName() << std::endl;
+            //std::cout << creator->getNickname() << " say " << str << " on " << myCurrentChannel->getName() << std::endl;
         }  
 };
 

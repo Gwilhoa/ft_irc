@@ -39,7 +39,7 @@ class Channel
         User *getUserByName(std::string userName){
                         
             for (std::vector<User>::iterator myIt = _users.begin(); myIt != _users.end(); myIt++){
-                if ((*myIt).getNickname() == userName)
+                if ((*myIt).getUsername() == userName)
                     return (&(*myIt));
             }
             return NULL;

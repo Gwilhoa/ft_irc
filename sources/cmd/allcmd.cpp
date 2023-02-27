@@ -34,6 +34,7 @@ void privatemsg(User &receiver, const std::string& msg, const std::string& name)
 
 int kick(User &receiver, std::string msg){
     receiver.myCurrentChannel->removeUser(msg);
+    return 1;
 }
 
 int joinChannel(User &receiver, std::string msg){
@@ -62,9 +63,9 @@ void defineCommand(User &receiver, std::string mystring){
             else
             {
                 if (Alpha == -1)
-                    std::cout << "Error " << (*it).str << " don't have argument" << std::endl;
+                    receiver.sendMsg("Error " + (*it).str + " don't have argument\n");
                 else
-                    std::cout << "Error " << (*it).str << " need spaces between command and args" << std::endl;
+                    receiver.sendMsg("Error " + (*it).str + " need spaces between command and args\n");
             }
             break;
         }

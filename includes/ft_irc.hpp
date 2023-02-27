@@ -47,7 +47,7 @@ std::vector<Channel>::iterator find(std::vector<Channel> myVec, Channel myChanne
     return(it);
 }
 
-std::vector<Server>::iterator find(std::vector<Server> myVec, Server myServer){
+/*std::vector<Server>::iterator find(std::vector<Server> myVec, Server myServer){
     std::vector<Server>::iterator it = myVec.begin();
     for (; it != myVec.end(); it ++){
         if (*it == myServer){
@@ -55,7 +55,7 @@ std::vector<Server>::iterator find(std::vector<Server> myVec, Server myServer){
         }
     }
     return(it);
-}
+}*/
 
 std::vector<User>::iterator find(std::vector<User> myVec, User myUser){
     std::vector<User>::iterator it = myVec.begin();

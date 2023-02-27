@@ -48,7 +48,7 @@ class Server
         void removeChannel(const std::string &name);
         Channel &getChannelByName(const std::string &name);
 
-		inline bool operator==(const Channel& rhs) { return _server_fd == rhs._server_fd; }
+		inline bool operator==(const Server& rhs) { return _server_fd == rhs._server_fd; }
 };
 #endif
 
