@@ -32,6 +32,10 @@ void privatemsg(User &receiver, const std::string& msg, const std::string& name)
     receiver.sendMsg(msg_to_send);
 }
 
+int kick(User &receiver, std::string msg){
+    receiver.myCurrentChannel->removeUser(msg);
+}
+
 int joinChannel(User &receiver, std::string msg){
     std::cout << msg << "\n";
     Channel *myChan = &(receiver._myCurrentServer->getChannelByName(msg));
@@ -46,6 +50,8 @@ void defineCommand(User &receiver, std::string mystring){
 
     std::vector<t_command> CommandList;
     CommandList.push_back(defineOneCommand("JOIN", joinChannel));
+    CommandList.push_back(defineOneCommand("KICK", kick));
+
 
     for (std::vector<s_command>::iterator it = (CommandList.begin()); it != CommandList.end(); it++){
         if (mystring.find((*it).str, 0) == 0){
@@ -65,7 +71,7 @@ void defineCommand(User &receiver, std::string mystring){
     }
 }
 
-/*
+/**
 void commandManager(User &user, const std::string& name){
     defineCommand(user, name);
 } 

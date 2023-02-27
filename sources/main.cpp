@@ -21,7 +21,7 @@
 int main(int argc, char *argv[])
 {
 	if (argc == 3) {
-		Server server = Server(atoi(argv[1]), to_string(argv[2]));
+		Server server = Server(atoi(argv[1]), (argv[2]));
 		if (server.init() == 1)
 			exit(1);
         while (true)

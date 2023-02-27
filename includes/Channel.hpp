@@ -18,9 +18,10 @@
 class Channel
 {
     private:
-        std::string         _name;
-        std::vector<User >  _users;
-        const Server        *_myCurrentServer;
+        std::string             _name;
+        std::vector<User >      _users;
+        const Server            *_myCurrentServer;
+        std::vector<Message>    _messages;
 
     public:
         Channel();
@@ -34,6 +35,28 @@ class Channel
         void addUser(User &user);
         void removeUser(User &user);
         void sendMsg(const std::string &msg);
+        
+        User *getUserByName(std::string userName){
+                        
+            for (std::vector<User>::iterator myIt = _users.begin(); myIt != _users.end(); myIt++){
+                if ((*myIt).getNickname() == userName)
+                    return (&(*myIt));
+            }
+            return NULL;
+        }
+
+        bool removeUser(const std::string userName){
+            if (getUserByName(userName)){
+                removeUser(*(getUserByName(userName)));
+                return true;
+            }
+            else {
+                std::cout << "User not found" << std::endl;
+                return false;
+            }
+        }
+
+        inline bool operator==(const Channel& rhs) { return _name == rhs._name; }
 };
 
 #endif

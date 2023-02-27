@@ -43,5 +43,7 @@ class User
         void setNickname(const std::string &newName);
 		void setCurrentChannel();
 		Channel *myCurrentChannel;
+
+		 bool operator==(const Channel& rhs) const { return (1); }
 };
 #endif

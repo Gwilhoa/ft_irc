@@ -54,22 +54,21 @@ std::vector <User> Channel::getUsers() const
 
 void Channel::addUser(User &user)
 {
-    _users.push_back(user);
-    user.myCurrentChannel = this;
+    if (find(_users, user) == _users.end())
+    {
+        _users.push_back(user);
+        user.myCurrentChannel = this;
+    }
+    else
+        std::cout << "User yet inside the channel" << std::endl;
 }
 
 void Channel::removeUser(User &user)
 {
-    std::vector<User>::iterator it = _users.begin();
-    while (it != _users.end())
-    {
-        if (it->getFd() == user.getFd())
-        {
-            _users.erase(it);
-            break;
-        }
-        it++;
-    }
+    if (find(_users, user) != _users.end())
+        _users.erase(find(_users, user));
+    else
+        std::cout << "User not found" << std::endl;
 }
 
 void Channel::sendMsg(const std::string &msg)
