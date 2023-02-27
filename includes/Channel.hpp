@@ -36,9 +36,9 @@ class Channel
         void removeUser(User &user);
         void sendMsg(const std::string &msg);
         
-        User *getUserByName(std::string userName){
-                        
-            for (std::vector<User>::iterator myIt = _users.begin(); myIt != _users.end(); myIt++){
+        User *getUserByName(const std::string &userName){
+            std::vector<User>::iterator myIt = _users.begin();     
+            for (; myIt != _users.end(); myIt++){
                 if ((*myIt).getUsername() == userName)
                     return (&(*myIt));
             }

@@ -41,10 +41,10 @@ class User
         int getAddr() const;
         std::string getNickname() const;
         void setNickname(const std::string &newName);
-		std::string getUsername() {return _username;}
+		std::string getUsername() const {return _username;}
 		void setCurrentChannel();
 		Channel *myCurrentChannel;
 
-		inline bool operator==(const User& rhs) const {return _fd == rhs._fd; }
+		bool operator==(const User& rhs) const {return _fd == rhs._fd; }
 };
 #endif

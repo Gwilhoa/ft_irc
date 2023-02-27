@@ -57,7 +57,7 @@ std::vector<Channel>::iterator find(std::vector<Channel> myVec, Channel myChanne
     return(it);
 }*/
 
-std::vector<User>::iterator find(std::vector<User> myVec, User myUser){
+std::vector<User>::iterator find(std::vector<User> myVec, User &myUser){
     std::vector<User>::iterator it = myVec.begin();
     for (; it != myVec.end(); it ++){
         if (*it == myUser){
