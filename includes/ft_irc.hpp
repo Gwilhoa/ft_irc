@@ -21,7 +21,8 @@
 # include <map>
 # include <poll.h>
 # include <vector>
-
+# include <bits/stdc++.h>
+# include <stdio.h>
 
 class Server;
 class Channel;
@@ -32,12 +33,13 @@ class Message;
 # include "Channel.hpp"
 # include "Server.hpp"
 # include "Message.hpp"
+# include "numeric.hpp"
 
 class User;
 class Channel;
 
-std::string to_string(char *str);
-void defineCommand(User &receiver, std::string mystring);
+//std::string to_string(char *str);
+void defineCommand(User &receiver, std::string mystring, Server &myServer);
 
 
 

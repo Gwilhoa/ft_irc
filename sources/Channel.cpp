@@ -64,8 +64,7 @@ void Channel::removeUser(User &user)
 
 void Channel::sendMsg(const std::string &msg)
 {
-    for (std::map<int, User>::iterator it = _users.begin(); it != _users.end(); it++)
-    {
+    for (std::map<int, User>::iterator it = _users.begin(); it != _users.end(); it++){
         it->second.sendMsg(msg);
     }
 }

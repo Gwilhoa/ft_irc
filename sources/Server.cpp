@@ -123,22 +123,20 @@ std::vector <Channel> Server::getChannels() const
     return this->_channels;
 }
 
-Channel &Server::getChannelByName(const std::string &name)
-{
-    for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
-    {
+Channel *Server::getChannelByName(const std::string &name) {
+    for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); it++){
         if (it->getName() == name)
-            return *it;
+            return &(*it);
     }
-	return *_channels.begin();
+	return NULL;
 }
 
-Channel Server::addChannel(const std::string name)
-{
+Channel &Server::addChannel(const std::string name) {
 	Channel	newchan(name, this);
     _channels.push_back(newchan);
-	return newchan;
+	return _channels.back();
 }
+
 void Server::removeChannel(const std::string &name)
 {
     for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)

@@ -43,8 +43,12 @@ class User
         std::string getNickname() const;
         void setNickname(const std::string &newName);
 		std::string getUsername() const {return _username;}
+		void setUsername(const std::string &username){
+			_username = username;
+		}
 		void setCurrentChannel();
 		Channel *myCurrentChannel;
 		bool operator==(const User& rhs) const;
+		void sendNumeric(const int& msg) const;
 };
 #endif

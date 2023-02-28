@@ -55,6 +55,12 @@ void User::sendMsg(const std::string& msg) const
     send(this->_fd, msg.c_str(), msg.size(), 0);
 }
 
+void User::sendNumeric(const int& msg) const
+{
+    send(this->_fd, &msg, 1, 0);
+}
+
+
 //getters and setters
 int User::getFd() const
 {

@@ -2,10 +2,10 @@
 
 typedef struct s_command {
     std::string str;
-    int(*ptr)(User&, std::string);
+    void(*ptr)(User&, std::string, Server&);
 } t_command;
 
-t_command defineOneCommand(std::string str, int (*pf)(User&, std::string)) {
+t_command defineOneCommand(std::string str, void (*pf)(User&, std::string, Server&)) {
     t_command ret;
     ret.str = str;
     ret.ptr = pf;
@@ -21,36 +21,56 @@ int gotAlpha(std::string str)
     return -1;
 }
 
-int	nick(User &user, const std::string& name){
+void nick(User &user, const std::string& name, Server &myServer){
     user.setNickname(name);
-    return 1;
+}
+
+void user(User &user, const std::string& name, Server &myServer){
+    user.setUsername(name);
 }
 
 void privatemsg(User &receiver, const std::string& msg, const std::string& name){
-    std::string msg_to_send = "PRIVMSG " + name + " :" + msg;
+    //std::string msg_to_send = "PRIVMSG " + name + " :" + msg;
     receiver.sendMsg(msg_to_send);
 }
 
-int kick(User &receiver, std::string msg){
+void notice (User &receiver, const std::string& msg, const std::string& name){
+
+}
+
+void Mode (User &receiver, const std::string& msg, const std::string& name){
+    
+}
+
+void kick(User &receiver, std::string msg, Server &myServer){
     receiver.myCurrentChannel->removeUser(msg);
-    return 1;
 }
 
-int joinChannel(User &receiver, std::string msg){
+void joinChannel(User &receiver, std::string msg, Server &myServer){
     std::cout << msg << "\n";
-    Channel *myChan = &(receiver._myCurrentServer->getChannelByName(msg));
-    if (myChan == NULL)
-        *(receiver.myCurrentChannel) = (receiver._myCurrentServer->addChannel(msg));
-    else
+    dprintf(1, "a");
+    //std::cout << receiver._myCurrentServer;
+    Channel *myChan = (myServer.getChannelByName(msg));
+    dprintf(1, "b");
+    if (myChan == NULL){
+        Channel temp = myServer.addChannel(msg);
+        receiver.myCurrentChannel = &temp;
+        receiver.sendNumeric(RPL_TOPIC);
+        receiver.sendMsg((RPL_TOPIC) + " JOIN :" + msg);
+    }
+    else{
         receiver.myCurrentChannel = myChan;
-    return 1;
+    }
 }
 
-void defineCommand(User &receiver, std::string mystring){
+void defineCommand(User &receiver, std::string mystring, Server &myServer){
+
+    std::cout << "Command take " << mystring << std::endl;
 
     std::vector<t_command> CommandList;
     CommandList.push_back(defineOneCommand("JOIN", joinChannel));
     CommandList.push_back(defineOneCommand("KICK", kick));
+    CommandList.push_back(defineOneCommand("USER", user));
 
 
     for (std::vector<s_command>::iterator it = (CommandList.begin()); it != CommandList.end(); it++){
@@ -58,7 +78,7 @@ void defineCommand(User &receiver, std::string mystring){
             mystring = mystring.erase(0, (*it).str.length());
             int Alpha = gotAlpha(mystring);
             if (Alpha > 0)
-                (*it).ptr(receiver, &(mystring[Alpha]));
+                (*it).ptr(receiver, &(mystring[Alpha]), myServer);
             else
             {
                 if (Alpha == -1)
