@@ -91,7 +91,8 @@ void joinChannel(User &receiver, std::string msg, Server &myServer){
 }
 
 void defineCommand(User &receiver, std::string mystring, Server &myServer){
-
+    std::string other = mystring.substr(mystring.find('\n', 0)+ 1 , mystring.length());
+    mystring = mystring.substr(0, mystring.find('\n', 0));
     std::cout << "Command take " << mystring << std::endl;
 
     std::vector<t_command> CommandList;
@@ -99,6 +100,7 @@ void defineCommand(User &receiver, std::string mystring, Server &myServer){
     CommandList.push_back(defineOneCommand("JOIN", joinChannel));
     CommandList.push_back(defineOneCommand("KICK", kick));
     CommandList.push_back(defineOneCommand("USER", user));
+    CommandList.push_back(defineOneCommand("NICK", nick));
 
 
     for (std::vector<s_command>::iterator it = (CommandList.begin()); it != CommandList.end(); it++){
@@ -117,6 +119,8 @@ void defineCommand(User &receiver, std::string mystring, Server &myServer){
             break;
         }
     }
+    if (other.length() > 0)
+        defineCommand(receiver, other, myServer);
 }
 
 /**
