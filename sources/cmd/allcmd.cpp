@@ -65,15 +65,13 @@ void kick(User &receiver, std::string msg, Server &myServer){
 
 void joinChannel(User &receiver, std::string msg, Server &myServer){
     std::cout << msg << "\n";
-    dprintf(1, "a");
     //std::cout << receiver._myCurrentServer;
     Channel *myChan = (myServer.getChannelByName(msg));
-    dprintf(1, "b");
     if (myChan == NULL){
         Channel temp = myServer.addChannel(msg);
         receiver.myCurrentChannel = &temp;
-        receiver.sendNumeric(RPL_TOPIC);
-        receiver.sendMsg((RPL_TOPIC) + " JOIN :" + msg);
+        //receiver.sendNumeric(RPL_TOPIC);
+        receiver.sendMsg(RPL_TOPIC + std::string(" JOIN :") + msg);
     }
     else{
         receiver.myCurrentChannel = myChan;
