@@ -23,7 +23,7 @@ class Server
 		int _port;
 		std::string _password;
 		int _server_fd;
-		std::map <int, User> _connected_users;
+		std::vector <User> _connected_users;
 		std::vector <Channel> _channels;
 
 	public :
@@ -40,7 +40,7 @@ class Server
 		int	getPort() const;
 		std::string getPassword() const;
 		int getServerFd() const;
-		std::map <int, User> getConnectedUsers() const;
+		std::vector<User> getConnectedUsers() const;
         struct pollfd *getPollFds();
         std::vector <Channel> getChannels() const;
 		Channel *getChannel(std::string name);
@@ -49,6 +49,8 @@ class Server
         Channel *getChannelByName(const std::string &name);
 
 		inline bool operator==(const Server& rhs) { return _server_fd == rhs._server_fd; }
+		
+		User* getUserByName(std::string str);
 };
 #endif
 

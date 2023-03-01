@@ -24,7 +24,7 @@ Server::Server() : _port(), _server_fd()
 
 Server::Server(int port, const std::string& password) : _port(port), _password(password), _server_fd()
 {
-	_connected_users = std::map <int, User>();
+	_connected_users = std::vector <User>();
 }
 
 Server::Server(const Server &c) : _port(), _server_fd()
@@ -82,16 +82,20 @@ int Server::accept_connexion(){
 		std::cout << "Error: accept failed" << std::endl;
 		return 1;
 	}
-	_connected_users[fd_user] = User(fd_user, address);
+	_connected_users.push_back(User(fd_user, address));
 	std::cout << "New connection " <<  inet_ntoa(address.sin_addr) << ":" << ntohs(address.sin_port) << " : " << address.sin_family << " (" << fd_user << ")" << std::endl;
 	return 0;
 }
 
 int Server::disconnectUser(int fd)
 {
-    std::cout << "User " << _connected_users[fd].getNickname() << " disconnected" << std::endl;
-    _connected_users.erase(fd);
-    return 0;
+	for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it++) {
+		if (it->getFd() == fd){
+			std::cout << "User " << it->getNickname() << " disconnected" << std::endl;
+			_connected_users.erase(it);
+		}
+	}
+		return 0;
 }
 
 Channel* Server::getChannel(std::string name)
@@ -110,9 +114,10 @@ struct pollfd *Server::getPollFds()
     fds[i].fd = _server_fd;
     fds[i].events = POLLIN;
     i++;
-    for (std::map<int, User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it++)
+    for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it++)
     {
-        fds[i] = it->second.getpollfd();
+        
+		fds[i] = it->getpollfd();
         i++;
     }
     return fds;
@@ -166,7 +171,15 @@ int Server::getServerFd() const
 	return this->_server_fd;
 }
 
-std::map <int, User> Server::getConnectedUsers() const
+std::vector<User> Server::getConnectedUsers() const
 {
 	return this->_connected_users;
+}
+
+User* Server::getUserByName(std::string str){
+	for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it ++){
+		if (str == it->getNickname())
+			return &(*it);
+	}
+	return NULL;
 }

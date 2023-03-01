@@ -16,11 +16,11 @@
 
 class User;
 
-Channel::Channel()
+/*Channel::Channel()
 {
     _name = "";
     _users = std::map<User, bool>();
-}
+}*/
 
 Channel::Channel(const std::string &name, Server *myCurrentServer) : _name(name), _myCurrentServer(myCurrentServer)
 {

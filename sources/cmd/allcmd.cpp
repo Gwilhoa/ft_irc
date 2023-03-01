@@ -57,7 +57,13 @@ bool part(User &user, std::string name, Server &myServer){
 }
 
 bool privatemsg(User &receiver, std::string msg, Server &myServer){
-    //std::string msg_to_send = "PRIVMSG " + name + " :" + msg;
+    Channel* myChan = myServer.getChannelByName(firstArgu(msg));
+    if (myChan){
+        (void)receiver;
+    }
+    else {
+        User* use = myServer.getUserByName(firstArgu(msg));
+    }
     receiver.sendMsg(msg);
     return false;
 }
@@ -115,8 +121,7 @@ bool joinChannel(User &receiver, std::string msg, Server &myServer){
 }
 
 void defineCommand(User &receiver, std::string mystring, Server &myServer){
-    std::string other = mystring.substr(mystring.find('\n', 0)+ 1 , mystring.length());
-    mystring = mystring.substr(0, mystring.find('\n', 0));
+    //mystring = mystring.substr(0, mystring.find('\n', 0));
     std::cout << "Command take " << mystring << std::endl;
 
     std::vector<t_command> CommandList;
@@ -147,8 +152,8 @@ void defineCommand(User &receiver, std::string mystring, Server &myServer){
             break;
         }
     }
-    if (other.length() > 0)
-        defineCommand(receiver, other, myServer);
+    //if (other.length() > 0)
+      //  defineCommand(receiver, other, myServer);
 }
 
 /**

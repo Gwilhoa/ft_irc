@@ -35,8 +35,6 @@ class Message;
 # include "Message.hpp"
 # include "numeric.hpp"
 
-class User;
-class Channel;
 /*
 enum grade {
     operator = , random

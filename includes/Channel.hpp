@@ -24,7 +24,7 @@ class Channel
         std::vector<Message>    _messages;
 
     public:
-        Channel();
+        //Channel();
         Channel(const std::string &name, Server *myCurrentServer);
         Channel(const Channel &c);
         ~Channel();
