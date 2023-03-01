@@ -2,7 +2,7 @@
 
 typedef struct s_command {
     std::string str;
-    void(*ptr)(User&, std::string, Server&);
+    bool(*ptr)(User&, std::string, Server&);
 } t_command;
 
 std::string firstArgu(std::string &src){
@@ -11,7 +11,7 @@ std::string firstArgu(std::string &src){
     return retStr;
 }
 
-t_command defineOneCommand(std::string str, void (*pf)(User&, std::string, Server&)) {
+t_command defineOneCommand(std::string str, bool (*pf)(User&, std::string, Server&)) {
     t_command ret;
     ret.str = str;
     ret.ptr = pf;
@@ -27,55 +27,65 @@ int gotAlpha(std::string str)
     return -1;
 }
 
-void nick(User &user, std::string name, Server &myServer){
+bool nick(User &user, std::string name, Server &myServer){
     user.setNickname(name);
+    return false;
 }
 
-void pass(User &user, std::string name, Server &myServer){
+bool pass(User &user, std::string name, Server &myServer){
     //user.setNickname(name);
+    return false;
 }
 
-void user(User &user, std::string name, Server &myServer){
+bool user(User &user, std::string name, Server &myServer){
     user.setUsername(name);
+    return false;
 }
 
-void quit(User &user, std::string name, Server &myServer){
+bool quit(User &user, std::string name, Server &myServer){
     user.setNickname(name);
+    return false;
 }
 
-void part(User &user, std::string name, Server &myServer){
+bool part(User &user, std::string name, Server &myServer){
     user.setNickname(name);
+    return false;
 }
 
-void privatemsg(User &receiver, std::string msg, Server &myServer){
+bool privatemsg(User &receiver, std::string msg, Server &myServer){
     //std::string msg_to_send = "PRIVMSG " + name + " :" + msg;
     receiver.sendMsg(msg);
+    return false;
 }
 
-void notice (User &receiver, std::string msg, Server &myServer){
-
+bool notice (User &receiver, std::string msg, Server &myServer){
+    return false;
 }
 
-void mode (User &receiver, std::string msg, Server &myServer){
+bool mode (User &receiver, std::string msg, Server &myServer){
     Channel* myChan = myServer.getChannelByName(firstArgu(msg));
     if (myChan && myChan->is_op(receiver)){
         User* use = myChan->getUserByName(firstArgu(msg));
         if (use){
             myChan->op(*use);
+            return true;
         }
     }
+    return false;
 }
 
-void ping(User &receiver, std::string msg, Server &myServer){
+bool ping(User &receiver, std::string msg, Server &myServer){
     receiver.sendMsg("PONG " + msg);
+    return true;
 }
 
-void kick(User &receiver, std::string msg, Server &myServer){
+bool kick(User &receiver, std::string msg, Server &myServer){
     if (receiver.myCurrentChannel && receiver.canKick)
         receiver.myCurrentChannel->removeUser(msg);
+    return false;
 }
 
-void joinChannel(User &receiver, std::string msg, Server &myServer){
+bool joinChannel(User &receiver, std::string msg, Server &myServer){
     std::cout << msg << "\n";
     //std::cout << receiver._myCurrentServer;
     Channel *myChan = (myServer.getChannelByName(msg));
@@ -83,11 +93,12 @@ void joinChannel(User &receiver, std::string msg, Server &myServer){
         Channel temp = myServer.addChannel(msg);
         receiver.myCurrentChannel = &temp;
         //receiver.sendNumeric(RPL_TOPIC);
-        receiver.sendMsg(std::string(":") + std::string("gchatain")+ std::string("!localhost JOIN :") + msg);
+        //receiver.sendMsg(std::string(":") + std::string("gchatain")+ std::string("!localhost JOIN :") + msg);
     }
     else{
         receiver.myCurrentChannel = myChan;
     }
+    return true;
 }
 
 void defineCommand(User &receiver, std::string mystring, Server &myServer){
@@ -95,18 +106,19 @@ void defineCommand(User &receiver, std::string mystring, Server &myServer){
     std::cout << "Command take " << mystring << std::endl;
 
     std::vector<t_command> CommandList;
+    std::string oldString = mystring;
     CommandList.push_back(defineOneCommand("PING", ping));
     CommandList.push_back(defineOneCommand("JOIN", joinChannel));
     CommandList.push_back(defineOneCommand("KICK", kick));
     CommandList.push_back(defineOneCommand("USER", user));
-
 
     for (std::vector<s_command>::iterator it = (CommandList.begin()); it != CommandList.end(); it++){
         if (mystring.find((*it).str, 0) == 0){
             mystring = mystring.erase(0, (*it).str.length());
             int Alpha = gotAlpha(mystring);
             if (Alpha > 0)
-                (*it).ptr(receiver, &(mystring[Alpha]), myServer);
+                if ((*it).ptr(receiver, &(mystring[Alpha]), myServer))
+                    receiver.sendMsg(oldString + ":");
             else
             {
                 if (Alpha == -1)
@@ -120,7 +132,7 @@ void defineCommand(User &receiver, std::string mystring, Server &myServer){
 }
 
 /**
-void commandManager(User &user, const std::string& name){
+bool commandManager(User &user, const std::string& name){
     defineCommand(user, name);
 } 
 
