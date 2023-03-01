@@ -33,20 +33,14 @@ class Channel
         std::string getName() const;
         std::map <User, bool> getUsers() const;
         void addUser(User &user, bool ope);
-        void removeUser(User &user);
+        //void removeUser(User &user);
         void sendMsg(const std::string &msg);
         
         User *getUserByName(const std::string &userName) const;
 
-        bool removeUser(const std::string userName){
-            if (getUserByName(userName)){
-                removeUser(*(getUserByName(userName)));
-                return true;
-            }
-            else {
-                std::cout << "User not found" << std::endl;
-                return false;
-            }
+        void removeUser(User &user){
+            _users.erase(user);
+            //removeUser(*(getUserByName(userName)));
         }
 
         bool is_op(User& myUser){

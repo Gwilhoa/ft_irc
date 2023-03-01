@@ -48,7 +48,11 @@ bool quit(User &user, std::string name, Server &myServer){
 }
 
 bool part(User &user, std::string name, Server &myServer){
-    user.setNickname(name);
+    Channel* myChan = myServer.getChannelByName(firstArgu(name));
+    if (myChan){
+        myChan->removeUser(user);
+        return true;
+    }
     return false;
 }
 
@@ -80,8 +84,14 @@ bool ping(User &receiver, std::string msg, Server &myServer){
 }
 
 bool kick(User &receiver, std::string msg, Server &myServer){
-    if (receiver.myCurrentChannel && receiver.canKick)
-        receiver.myCurrentChannel->removeUser(msg);
+    Channel* myChan = myServer.getChannelByName(firstArgu(msg));
+    if (myChan){
+        User* use = myChan->getUserByName(firstArgu(msg));
+        if (use){
+            myChan->removeUser(*use);
+            return true;
+        }
+    }
     return false;
 }
 
@@ -91,12 +101,15 @@ bool joinChannel(User &receiver, std::string msg, Server &myServer){
     Channel *myChan = (myServer.getChannelByName(msg));
     if (myChan == NULL){
         Channel temp = myServer.addChannel(msg);
-        receiver.myCurrentChannel = &temp;
+        temp.addUser(receiver, true);
+        //receiver.myCurrentChannel = &temp;
         //receiver.sendNumeric(RPL_TOPIC);
-        //receiver.sendMsg(std::string(":") + std::string("gchatain")+ std::string("!localhost JOIN :") + msg);
+        receiver.sendMsg(std::string(":") + std::string("aurele")+ std::string("!localhost JOIN :") + msg);
     }
     else{
-        receiver.myCurrentChannel = myChan;
+        receiver.sendMsg(std::string(":") + std::string("aurele")+ std::string("!localhost JOIN :") + msg);
+        myChan->addUser(receiver, false);
+        //receiver.myCurrentChannel = myChan;
     }
     return true;
 }
@@ -113,14 +126,17 @@ void defineCommand(User &receiver, std::string mystring, Server &myServer){
     CommandList.push_back(defineOneCommand("KICK", kick));
     CommandList.push_back(defineOneCommand("USER", user));
     CommandList.push_back(defineOneCommand("NICK", nick));
+    CommandList.push_back(defineOneCommand("MODE", mode));
 
     for (std::vector<s_command>::iterator it = (CommandList.begin()); it != CommandList.end(); it++){
         if (mystring.find((*it).str, 0) == 0){
             mystring = mystring.erase(0, (*it).str.length());
             int Alpha = gotAlpha(mystring);
             if (Alpha > 0)
+            {
                 if ((*it).ptr(receiver, &(mystring[Alpha]), myServer))
                     receiver.sendMsg(oldString + ":");
+            }
             else
             {
                 if (Alpha == -1)

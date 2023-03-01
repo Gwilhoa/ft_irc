@@ -29,8 +29,6 @@ class User
 
 	public :
 		//Server *_myCurrentServer;
-		bool canKick;
-		bool root;
 		User();
 		User(int fd, struct sockaddr_in addr/*, Server *myCurrentServer*/);
 		User(const User &c);
@@ -49,7 +47,7 @@ class User
 			_username = username;
 		}
 		void setCurrentChannel();
-		Channel *myCurrentChannel;
+
 		bool operator==(const User& rhs) const;
 		bool operator>(const User& rhs) const {
 			return _fd > rhs._fd;

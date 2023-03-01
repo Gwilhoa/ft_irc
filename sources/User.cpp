@@ -20,7 +20,7 @@ User::User()
 }
 
 User::User(int fd, struct sockaddr_in addr) : 
-myCurrentChannel(NULL), _fd(fd), _port(addr.sin_port), _addr(addr.sin_addr.s_addr), _nickname("null")
+ _fd(fd), _port(addr.sin_port), _addr(addr.sin_addr.s_addr), _nickname("null")
 {
 }
 

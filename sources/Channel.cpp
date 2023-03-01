@@ -57,11 +57,11 @@ void Channel::addUser(User &user, bool ope) {
     //_users[user.getFd()] = user;
 }
 
-void Channel::removeUser(User &user)
+/*void Channel::removeUser(User &user)
 {
     if (_users.erase(user) == 0)
         std::cout << "User not found" << std::endl;
-}
+}*/
 
 void Channel::sendMsg(const std::string &msg)
 {
