@@ -45,6 +45,11 @@ enum grade {
 //std::string to_string(char *str);
 void defineCommand(User &receiver, std::string mystring, Server &myServer);
 
+std::string firstArgu(std::string &src);/*{
+    //std::string retStr = retStr.substr(0, src.find(' ', 0));
+    //src = src.substr(src.find(' ', 0) + 1);
+    return "e";//retStr;
+}*/
 
 
 

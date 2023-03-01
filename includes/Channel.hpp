@@ -49,7 +49,16 @@ class Channel
             }
         }
 
+        bool is_op(User& myUser){
+            return _users[myUser];
+            //return true;
+        }
 
+        void op(User& myUser){
+            _users[myUser] = true;
+            //std::map<User, bool>::iterator myIt =  _users.find(myUser);
+            //myIt->second = true;
+        }
 
         inline bool operator==(const Channel& rhs) { return _name == rhs._name; }
 };

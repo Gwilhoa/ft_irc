@@ -5,6 +5,12 @@ typedef struct s_command {
     void(*ptr)(User&, std::string, Server&);
 } t_command;
 
+std::string firstArgu(std::string &src){
+    std::string retStr = retStr.substr(0, src.find(' ', 0));
+    src = src.substr(src.find(' ', 0) + 1);
+    return retStr;
+}
+
 t_command defineOneCommand(std::string str, void (*pf)(User&, std::string, Server&)) {
     t_command ret;
     ret.str = str;
@@ -51,7 +57,13 @@ void notice (User &receiver, std::string msg, Server &myServer){
 }
 
 void mode (User &receiver, std::string msg, Server &myServer){
-    
+    Channel* myChan = myServer.getChannelByName(firstArgu(msg));
+    if (myChan && myChan->is_op(receiver)){
+        User* use = myChan->getUserByName(firstArgu(msg));
+        if (use){
+            myChan->op(*use);
+        }
+    }
 }
 
 void ping(User &receiver, std::string msg, Server &myServer){
