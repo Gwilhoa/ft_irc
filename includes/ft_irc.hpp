@@ -37,6 +37,10 @@ class Message;
 
 class User;
 class Channel;
+/*
+enum grade {
+    operator = , random
+};*/
 
 //std::string to_string(char *str);
 void defineCommand(User &receiver, std::string mystring, Server &myServer);

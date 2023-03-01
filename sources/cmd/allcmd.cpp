@@ -21,29 +21,46 @@ int gotAlpha(std::string str)
     return -1;
 }
 
-void nick(User &user, const std::string& name, Server &myServer){
+void nick(User &user, std::string name, Server &myServer){
     user.setNickname(name);
 }
 
-void user(User &user, const std::string& name, Server &myServer){
+void pass(User &user, std::string name, Server &myServer){
+    //user.setNickname(name);
+}
+
+void user(User &user, std::string name, Server &myServer){
     user.setUsername(name);
 }
 
-void privatemsg(User &receiver, const std::string& msg, const std::string& name){
+void quit(User &user, std::string name, Server &myServer){
+    user.setNickname(name);
+}
+
+void part(User &user, std::string name, Server &myServer){
+    user.setNickname(name);
+}
+
+void privatemsg(User &receiver, std::string msg, Server &myServer){
     //std::string msg_to_send = "PRIVMSG " + name + " :" + msg;
-    receiver.sendMsg(msg_to_send);
+    receiver.sendMsg(msg);
 }
 
-void notice (User &receiver, const std::string& msg, const std::string& name){
+void notice (User &receiver, std::string msg, Server &myServer){
 
 }
 
-void Mode (User &receiver, const std::string& msg, const std::string& name){
+void mode (User &receiver, std::string msg, Server &myServer){
     
 }
 
+void ping(User &receiver, std::string msg, Server &myServer){
+    receiver.sendMsg("PONG " + msg);
+}
+
 void kick(User &receiver, std::string msg, Server &myServer){
-    receiver.myCurrentChannel->removeUser(msg);
+    if (receiver.myCurrentChannel && receiver.canKick)
+        receiver.myCurrentChannel->removeUser(msg);
 }
 
 void joinChannel(User &receiver, std::string msg, Server &myServer){
@@ -68,6 +85,7 @@ void defineCommand(User &receiver, std::string mystring, Server &myServer){
     std::cout << "Command take " << mystring << std::endl;
 
     std::vector<t_command> CommandList;
+    CommandList.push_back(defineOneCommand("PING", ping));
     CommandList.push_back(defineOneCommand("JOIN", joinChannel));
     CommandList.push_back(defineOneCommand("KICK", kick));
     CommandList.push_back(defineOneCommand("USER", user));

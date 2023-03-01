@@ -82,7 +82,7 @@ int Server::accept_connexion(){
 		std::cout << "Error: accept failed" << std::endl;
 		return 1;
 	}
-	_connected_users[fd_user] = User(fd_user, address, this);
+	_connected_users[fd_user] = User(fd_user, address);
 	std::cout << "New connection " <<  inet_ntoa(address.sin_addr) << ":" << ntohs(address.sin_port) << " : " << address.sin_family << " (" << fd_user << ")" << std::endl;
 	return 0;
 }

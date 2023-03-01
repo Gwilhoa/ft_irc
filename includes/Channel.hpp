@@ -19,7 +19,7 @@ class Channel
 {
     private:
         std::string             _name;
-        std::map<int, User>     _users;
+        std::map<User, bool>     _users;
         const Server            *_myCurrentServer;
         std::vector<Message>    _messages;
 
@@ -31,8 +31,8 @@ class Channel
         Channel & operator=(const Channel &c);
         //getters and setters
         std::string getName() const;
-        std::map <int, User> getUsers() const;
-        void addUser(User &user);
+        std::map <User, bool> getUsers() const;
+        void addUser(User &user, bool ope);
         void removeUser(User &user);
         void sendMsg(const std::string &msg);
         
@@ -48,6 +48,8 @@ class Channel
                 return false;
             }
         }
+
+
 
         inline bool operator==(const Channel& rhs) { return _name == rhs._name; }
 };

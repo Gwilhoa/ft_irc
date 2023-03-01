@@ -28,9 +28,11 @@ class User
 		std::string _username;
 
 	public :
-		Server *_myCurrentServer;
+		//Server *_myCurrentServer;
+		bool canKick;
+		bool root;
 		User();
-		User(int fd, struct sockaddr_in addr, Server *myCurrentServer);
+		User(int fd, struct sockaddr_in addr/*, Server *myCurrentServer*/);
 		User(const User &c);
 		~User();
 		User & operator=(const User &c);
@@ -49,6 +51,12 @@ class User
 		void setCurrentChannel();
 		Channel *myCurrentChannel;
 		bool operator==(const User& rhs) const;
+		bool operator>(const User& rhs) const {
+			return _fd > rhs._fd;
+		}
+		bool operator<(const User& rhs) const {
+			return _fd < rhs._fd;
+		}
 		void sendNumeric(const int& msg) const;
 };
 #endif

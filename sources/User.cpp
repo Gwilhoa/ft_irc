@@ -19,8 +19,8 @@ User::User()
 
 }
 
-User::User(int fd, struct sockaddr_in addr, Server *myCurrentServer) : 
-myCurrentChannel(NULL), _fd(fd), _port(addr.sin_port), _addr(addr.sin_addr.s_addr), _nickname("default"), _myCurrentServer(myCurrentServer)
+User::User(int fd, struct sockaddr_in addr) : 
+myCurrentChannel(NULL), _fd(fd), _port(addr.sin_port), _addr(addr.sin_addr.s_addr), _nickname("default")
 {
 }
 
