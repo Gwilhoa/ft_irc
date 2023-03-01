@@ -135,7 +135,7 @@ void defineCommand(User &receiver, std::string mystring, Server &myServer){
             if (Alpha > 0)
             {
                 if ((*it).ptr(receiver, &(mystring[Alpha]), myServer))
-                    receiver.sendMsg(oldString + ":");
+                    (void) oldString;//receiver.sendMsg(oldString + ":");
             }
             else
             {
@@ -155,7 +155,6 @@ void defineCommand(User &receiver, std::string mystring, Server &myServer){
 bool commandManager(User &user, const std::string& name){
     defineCommand(user, name);
 } 
-
 int main(int argc, char **argv){
     User a;
     defineCommand(a, (argv[1]));
