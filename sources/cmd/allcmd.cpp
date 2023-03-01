@@ -83,7 +83,7 @@ void joinChannel(User &receiver, std::string msg, Server &myServer){
         Channel temp = myServer.addChannel(msg);
         receiver.myCurrentChannel = &temp;
         //receiver.sendNumeric(RPL_TOPIC);
-        receiver.sendMsg(RPL_TOPIC + std::string(" JOIN :") + msg);
+        receiver.sendMsg(std::string(":") + std::string("gchatain")+ std::string("!localhost JOIN :") + msg);
     }
     else{
         receiver.myCurrentChannel = myChan;
