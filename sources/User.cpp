@@ -12,6 +12,7 @@
 
 
 
+#include <string>
 #include "../includes/User.hpp"
 
 User::User()
@@ -19,8 +20,8 @@ User::User()
 
 }
 
-User::User(int fd, struct sockaddr_in addr) : 
- _fd(fd), _port(addr.sin_port), _addr(addr.sin_addr.s_addr), _nickname("null")
+User::User(int fd, struct sockaddr_in addr) :
+ _fd(fd), _port(addr.sin_port), _addr(addr.sin_addr.s_addr)
 {
 }
 
@@ -83,9 +84,9 @@ std::string User::getNickname() const
     return _nickname;
 }
 
-void User::setNickname(const std::string &newName)
+void User::setNickname(std::string &newName)
 {
-    this->_nickname = newName;
+    //_nickname = newName;
 }
 
 bool User::operator==(const User &rhs) const {

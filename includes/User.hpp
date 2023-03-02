@@ -28,9 +28,8 @@ class User
 		std::string _username;
 
 	public :
-		//Server *_myCurrentServer;
 		User();
-		User(int fd, struct sockaddr_in addr/*, Server *myCurrentServer*/);
+		User(int fd, struct sockaddr_in addr);
 		User(const User &c);
 		~User();
 		User & operator=(const User &c);
@@ -41,10 +40,10 @@ class User
         int getPort() const;
         int getAddr() const;
         std::string getNickname() const;
-        void setNickname(const std::string &newName);
+        void setNickname(std::string &newName);
 		std::string getUsername() const {return _username;}
 		void setUsername(const std::string &username){
-			_username = username;
+			//_username = username;
 		}
 		void setCurrentChannel();
 

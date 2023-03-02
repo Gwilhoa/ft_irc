@@ -53,7 +53,7 @@ std::map <User, bool> Channel::getUsers() const
 }
 
 void Channel::addUser(User &user, bool ope) {
-    _users.insert(std::make_pair<User, bool>(user, ope));
+    _users[user] = ope;
     //_users[user.getFd()] = user;
 }
 

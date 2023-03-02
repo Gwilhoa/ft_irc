@@ -28,6 +28,7 @@ int gotAlpha(std::string str)
 }
 
 bool nick(User &user, std::string name, Server &myServer){
+    (void)myServer;
     user.setNickname(name);
     return false;
 }
@@ -120,8 +121,14 @@ bool joinChannel(User &receiver, std::string msg, Server &myServer){
     return true;
 }
 
-void defineCommand(User &receiver, std::string mystring, Server &myServer){
-    //mystring = mystring.substr(0, mystring.find('\n', 0));
+void execCommand(User &receiver, std::string &mystring, Server &myServer){
+    std::vector<std::string> Command = ft_split(mystring, '\n');
+    for (std::vector<std::string>::iterator it = Command.begin(); it != Command.end(); it++){
+        defineCommand(receiver, *it, myServer);
+    }
+}
+
+void defineCommand(User &receiver, std::string &mystring, Server &myServer){
     std::cout << "Command take " << mystring << std::endl;
 
     std::vector<t_command> CommandList;

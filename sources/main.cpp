@@ -50,8 +50,10 @@ int main(int argc, char *argv[])
                             server.disconnectUser(server.getPollFds()[i].fd);
                         }
                         buffer[n] = '\0';
+                        std::string message(buffer);
                         std::cout << buffer << std::endl;
-                        defineCommand(server.getConnectedUsers()[server.getPollFds()[i].fd], buffer, server);
+                        execCommand(server.getConnectedUsers()[server.getPollFds()[i].fd],
+                                    message, server);
                     }
                 }
                 i++;

@@ -21,7 +21,6 @@
 # include <map>
 # include <poll.h>
 # include <vector>
-# include <bits/stdc++.h>
 # include <stdio.h>
 
 class Server;
@@ -41,7 +40,9 @@ enum grade {
 };*/
 
 //std::string to_string(char *str);
-void defineCommand(User &receiver, std::string mystring, Server &myServer);
+void defineCommand(User &receiver, std::string &mystring, Server &myServer);
+void execCommand(User &receiver, std::string &mystring, Server &myServer);
+std::vector<std::string> ft_split(const std::string &str, char delim);
 
 std::string firstArgu(std::string &src);/*{
     //std::string retStr = retStr.substr(0, src.find(' ', 0));
