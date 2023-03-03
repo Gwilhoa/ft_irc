@@ -34,7 +34,7 @@ bool nick(User &user, std::string name, Server &myServer){
 }
 
 bool pass(User &user, std::string name, Server &myServer){
-    if (! user.PassValid(name, myServer))
+    if (name != myServer.getPassword())
         myServer.quit(user);
     return false;
 }
@@ -147,6 +147,7 @@ void defineCommand(User &receiver, std::string &mystring, Server &myServer){
     CommandList.push_back(make_pair("USER", user));
     CommandList.push_back(make_pair("NICK", nick));
     CommandList.push_back(make_pair("MODE", mode));
+    CommandList.push_back(make_pair("PASS", mode));
 
     for (std::vector< std::pair < std::string, bool(*)(User&, std::string, Server&) > >::iterator it = (CommandList.begin()); it != CommandList.end(); it++){
         if (mystring.find((*it).first, 0) == 0){

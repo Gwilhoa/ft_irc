@@ -28,6 +28,7 @@ class User
 		std::string _username;
 
 	public :
+		bool completed;
 		User();
 		User(int fd, struct sockaddr_in addr);
 		User(const User &c);
@@ -56,6 +57,6 @@ class User
 		}
 		void sendNumeric(const int& msg) const;
 
-		bool PassValid(std::string str, Server &server);
+		//bool PassValid(std::string str, Server &server);
 };
 #endif

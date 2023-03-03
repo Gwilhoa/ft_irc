@@ -97,6 +97,6 @@ bool User::operator==(const User &rhs) const {
 }
 
 
-bool User::PassValid(std::string str, Server &server) {
+/*bool User::PassValid(std::string str, Server &server) {
 	return (str == server.getPassword());
-}
+}*/
