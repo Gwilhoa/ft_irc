@@ -44,12 +44,17 @@ class Channel
         }
 
         bool is_op(User& myUser){
-            return _users[myUser];
-            //return true;
+            if (myUser.completed)
+                return _users[myUser];
+            return false;
         }
 
-        void op(User& myUser){
-            _users[myUser] = true;
+        bool op(User& myUser){
+            if (myUser.completed){
+                _users[myUser] = true;
+                return true;
+            }
+            return false
             //std::map<User, bool>::iterator myIt =  _users.find(myUser);
             //myIt->second = true;
         }

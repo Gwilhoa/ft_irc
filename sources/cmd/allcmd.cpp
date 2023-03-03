@@ -37,6 +37,8 @@ bool pass(User &user, std::string name, Server &myServer){
     std::cout << "we Pass " << name << "\n";
     if (name != myServer.getPassword())
         myServer.quit(user);
+    else
+        user.validPass();
     return true;
 }
 
@@ -63,6 +65,8 @@ bool part(User &user, std::string name, Server &myServer){
 }
 
 bool privatemsg(User &receiver, std::string msg, Server &myServer){
+    if (!receiver.completed)
+        return false;
     std::string firstArg = firstArgu(msg);
     Channel* myChan = myServer.getChannelByName(firstArg);
     if (myChan){
@@ -79,6 +83,8 @@ bool privatemsg(User &receiver, std::string msg, Server &myServer){
 }
 
 bool notice (User &receiver, std::string msg, Server &myServer){
+    if (!receiver.completed)
+        return false;
     (void)receiver;
     (void)msg;
     (void)myServer;
@@ -86,12 +92,14 @@ bool notice (User &receiver, std::string msg, Server &myServer){
 }
 
 bool mode (User &receiver, std::string msg, Server &myServer){
+    if (!receiver.completed)
+        return false;
     Channel* myChan = myServer.getChannelByName(firstArgu(msg));
     if (myChan && myChan->is_op(receiver)){
         User* use = myChan->getUserByName(firstArgu(msg));
-        if (use){
-            myChan->op(*use);
-            return true;
+        if (use) {
+            if (myChan->op(*use))
+                return true;
         }
     }
     return false;
@@ -104,6 +112,8 @@ bool ping(User &receiver, std::string msg, Server &myServer){
 }
 
 bool kick(User &receiver, std::string msg, Server &myServer){
+    if (!receiver.completed)
+        return false;
     (void)receiver;
     Channel* myChan = myServer.getChannelByName(firstArgu(msg));
     if (myChan){

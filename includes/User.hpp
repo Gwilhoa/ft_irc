@@ -26,6 +26,9 @@ class User
 		int _addr;
 		std::string _nickname;
 		std::string _username;
+		bool haveNick;
+		bool havePass;
+		bool haveUser;
 
 	public :
 		bool completed;
@@ -45,6 +48,7 @@ class User
 		std::string getUsername() const {return _username;}
 		void setUsername(const std::string &username){
 			_username = username;
+			haveUser = true;
 		}
 		void setCurrentChannel();
 
@@ -57,6 +61,13 @@ class User
 		}
 		void sendNumeric(const int& msg) const;
 
+		void checkAll(){
+			completed = (haveNick && havePass && haveUser);
+		}
+
+		void validPass(){
+			completed = true;
+		}
 		//bool PassValid(std::string str, Server &server);
 };
 #endif

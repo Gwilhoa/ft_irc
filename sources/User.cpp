@@ -90,6 +90,7 @@ std::string User::getNickname() const
 void User::setNickname(std::string &newName)
 {
     _nickname = newName;
+    haveNick = true;
 }
 
 bool User::operator==(const User &rhs) const {
