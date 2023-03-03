@@ -30,28 +30,30 @@ int gotAlpha(std::string str)
 bool nick(User &user, std::string name, Server &myServer){
     (void)myServer;
     user.setNickname(name);
-    return false;
+    return true;
 }
 
 bool pass(User &user, std::string name, Server &myServer){
+    std::cout << "we Pass " << name << "\n";
     if (name != myServer.getPassword())
         myServer.quit(user);
-    return false;
+    return true;
 }
 
 bool user(User &user, std::string name, Server &myServer){
     (void)myServer;
     user.setUsername(name);
-    return false;
+    return true;
 }
 
 bool quit(User &user, std::string name, Server &myServer){
+    (void) name;
     myServer.quit(user);
-    return false;
+    return true;
 }
 
 bool part(User &user, std::string name, Server &myServer){
-    (void)myServer;
+    (void) myServer;
     Channel* myChan = myServer.getChannelByName(firstArgu(name));
     if (myChan){
         myChan->removeUser(user);
@@ -64,12 +66,12 @@ bool privatemsg(User &receiver, std::string msg, Server &myServer){
     std::string firstArg = firstArgu(msg);
     Channel* myChan = myServer.getChannelByName(firstArg);
     if (myChan){
-        (void)receiver;
+        myChan->sendMsg(msg);
     }
     else {
         User* use = myServer.getUserByName(firstArg);
         if (use){
-            (void)use;
+            use->sendMsg(msg);
         }
     }
     receiver.sendMsg(msg);
@@ -77,6 +79,9 @@ bool privatemsg(User &receiver, std::string msg, Server &myServer){
 }
 
 bool notice (User &receiver, std::string msg, Server &myServer){
+    (void)receiver;
+    (void)msg;
+    (void)myServer;
     return false;
 }
 
@@ -93,11 +98,13 @@ bool mode (User &receiver, std::string msg, Server &myServer){
 }
 
 bool ping(User &receiver, std::string msg, Server &myServer){
+    (void)myServer;
     receiver.sendMsg("PONG " + msg);
     return true;
 }
 
 bool kick(User &receiver, std::string msg, Server &myServer){
+    (void)receiver;
     Channel* myChan = myServer.getChannelByName(firstArgu(msg));
     if (myChan){
         User* use = myChan->getUserByName(firstArgu(msg));
@@ -109,8 +116,15 @@ bool kick(User &receiver, std::string msg, Server &myServer){
     return false;
 }
 
+bool cap(User &receiver, std::string msg, Server &myServer){
+    (void)receiver;
+    (void)msg;
+    (void)myServer;
+    return (true);
+}
+
 bool joinChannel(User &receiver, std::string msg, Server &myServer){
-    std::cout << msg << "\n";
+    std::cout << "we Join "<< "\n";
     //std::cout << receiver._myCurrentServer;
     Channel *myChan = (myServer.getChannelByName(msg));
     if (myChan == NULL){
@@ -152,6 +166,7 @@ void execCommand(User &receiver, std::string &mystring, Server &myServer){
     CommandList["USER"] = user;
     CommandList["NICK"] = nick;
     CommandList["MODE"] = mode;
+    CommandList["CAP"] = cap;
     CommandList["PASS"] = pass;
 
     std::cout << "Command take " << cmd << std::endl;

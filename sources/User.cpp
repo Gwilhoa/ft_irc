@@ -27,7 +27,7 @@ User::User(int fd, struct sockaddr_in addr) :
     _nickname = std::string("Guest"+fd);
 }
 
-User::User(const User &c) : _addr(c._addr), _port(c._port), _fd(c._fd), _nickname(c._nickname)
+User::User(const User &c) : _fd(c._fd), _port(c._port), _addr(c._addr), _nickname(c._nickname)
 {
 	//*this = c;
 }

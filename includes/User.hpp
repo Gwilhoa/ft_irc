@@ -44,7 +44,7 @@ class User
         void setNickname(std::string &newName);
 		std::string getUsername() const {return _username;}
 		void setUsername(const std::string &username){
-			//_username = username;
+			_username = username;
 		}
 		void setCurrentChannel();
 

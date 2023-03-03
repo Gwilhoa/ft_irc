@@ -90,7 +90,7 @@ int Server::accept_connexion(){
 
 int Server::disconnectUser(int fd)
 {
-	for (int i = 0; i < _connected_users.size(); i++)
+	for (size_t i = 0; i < _connected_users.size(); i++)
     {
         if (_connected_users[i].getFd() == fd)
         {
@@ -100,8 +100,6 @@ int Server::disconnectUser(int fd)
     }
     return 0;
 }
-
-
 
 Channel* Server::getChannel(std::string name)
 {
