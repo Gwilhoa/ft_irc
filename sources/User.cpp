@@ -27,7 +27,7 @@ User::User(int fd, struct sockaddr_in addr) :
     _nickname = std::string("Guest"+fd);
 }
 
-User::User(const User &c) : _addr(c._addr), _port(c._port), _fd(c._fd), _nickname(c._nickname)
+User::User(const User &c) : _fd(c._fd), _port(c._port), _addr(c._addr), _nickname(c._nickname)
 {
 	//*this = c;
 }
@@ -90,6 +90,7 @@ std::string User::getNickname() const
 void User::setNickname(std::string &newName)
 {
     _nickname = newName;
+    haveNick = true;
 }
 
 bool User::operator==(const User &rhs) const {

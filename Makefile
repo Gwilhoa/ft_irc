@@ -9,7 +9,7 @@ INC_LST		:= ft_irc.hpp Server.hpp User.hpp Channel.hpp Message.hpp
 INC_FILE	:= includes
 
 CC			:= c++
-FLAGS		:= -std=c++98 -g3 -fsanitize=address
+FLAGS		:= -std=c++98 -g3 -fsanitize=address -Wall -Werror -Wextra
 RM			:= rm -rf
 
 OBJS_LST	:= $(SRCS_LST:.cpp=.o)

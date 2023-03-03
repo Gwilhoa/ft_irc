@@ -22,29 +22,32 @@ int gotAlpha(std::string str)
     return -1;
 }
 
-bool nick(User &user, std::string &name, Server &myServer){
-    std::cout << user.getFd() << " changed to " << name << std::endl;
+bool nick(User &user, std::string name, Server &myServer){
+    (void)myServer;
     user.setNickname(name);
-    return false;
+    return true;
 }
 
 bool pass(User &user, std::string &pass, Server &myServer){
     if (pass != myServer.getPassword()) {
         user.sendMsg("ERROR :Password is not correct");
         myServer.quit(user);
+        return false;
     }
-    return false;
+    user.validPass();
+    return true;
 }
 
 bool user(User &user, std::string &name, Server &myServer){
     (void)myServer;
     user.setUsername(name);
-    return false;
+    return true;
 }
 
 bool quit(User &user, std::string &name, Server &myServer){
+    (void) (name);
     myServer.quit(user);
-    return false;
+    return true;
 }
 
 bool part(User &user, std::string &args, Server &myServer){
@@ -59,6 +62,8 @@ bool part(User &user, std::string &args, Server &myServer){
 }
 
 bool privatemsg(User &receiver, std::string msg, Server &myServer){
+    if (!receiver.completed)
+        return false;
     std::string sender = ft_split(msg, ' ')[0];
     Channel* myChan = myServer.getChannelByName(sender);
     if (myChan){
@@ -76,11 +81,18 @@ bool privatemsg(User &receiver, std::string msg, Server &myServer){
     return false;
 }
 
-bool notice (User &receiver, std::string &msg, Server &myServer){
+bool notice (User &receiver, std::string msg, Server &myServer){
+    if (!receiver.completed)
+        return false;
+    (void)receiver;
+    (void)msg;
+    (void)myServer;
     return false;
 }
 
 bool mode (User &receiver, std::string &msg, Server &myServer){
+    if (!receiver.completed)
+        return false;
     std::vector<std::string> args = ft_split(msg, ' ');
     Channel* myChan = myServer.getChannelByName(args[0]);
     if (myChan && myChan->is_op(receiver)){
@@ -94,11 +106,15 @@ bool mode (User &receiver, std::string &msg, Server &myServer){
 }
 
 bool ping(User &receiver, std::string &msg, Server &myServer){
+    (void)myServer;
     receiver.sendMsg("PONG " + msg);
     return true;
 }
 
 bool kick(User &receiver, std::string &msg, Server &myServer){
+    if (!receiver.completed)
+        return false;
+    (void)receiver;
     std::vector<std::string> args = ft_split(msg, ' ');
     Channel* myChan = myServer.getChannelByName(args[0]);
     if (myChan){
@@ -143,7 +159,7 @@ void execCommand(User &receiver, std::string &mystring, Server &myServer){
     //std::string cmd = firstArgu(mystring);
     CommandList["QUIT"] = quit;
     //CommandList["PRIVMSG"] = privatemsg;
-    CommandList["NOTICE"] = notice;
+    //CommandList["NOTICE"] = notice;
     CommandList["PART"] = part;
     CommandList["PING"] = ping;
     CommandList["JOIN"] = joinChannel;
