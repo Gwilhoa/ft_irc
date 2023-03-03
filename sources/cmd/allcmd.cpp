@@ -128,55 +128,68 @@ bool joinChannel(User &receiver, std::string msg, Server &myServer){
     return true;
 }
 
-void execCommand(User &receiver, std::string &mystring, Server &myServer){
-    std::vector<std::string> Command = ft_split(mystring, '\n');
+void parseCommand(User &receiver, std::string &receivedMessage, Server &myServer){
+    std::vector<std::string> Command = ft_split(receivedMessage, '\n');
     for (std::vector<std::string>::iterator it = Command.begin(); it != Command.end(); it++){
-        defineCommand(receiver, *it, myServer);
+        execCommand(receiver, *it, myServer);
     }
 }
 
-void defineCommand(User &receiver, std::string &mystring, Server &myServer){
+void execCommand(User &receiver, std::string &mystring, Server &myServer){
     std::cout << "Command take " << mystring << std::endl;
 
-    std::vector < std::pair < std::string, bool(*)(User&, std::string, Server&) > > CommandList;
+    //std::vector < std::pair < std::string, bool(*)(User&, std::string, Server&) > > CommandList;
+    std::map<std::string, bool(*)(User&, std::string, Server&)> CommandList;
     std::string oldString = mystring;
+    std::string cmd = ft_split(mystring, ' ')[0];
+    CommandList["QUIT"] = quit;
+    //CommandList["PRIVMSG"] = privatemsg;
+    CommandList["NOTICE"] = notice;
+    CommandList["PART"] = part;
+    CommandList["PING"] = ping;
+    CommandList["JOIN"] = joinChannel;
+    CommandList["KICK"] = kick;
+    CommandList["USER"] = user;
+    CommandList["NICK"] = nick;
+    CommandList["MODE"] = mode;
+    CommandList["PASS"] = pass;
 
-    CommandList.push_back(make_pair("PING", ping));
-    CommandList.push_back(make_pair("JOIN", joinChannel));
-    CommandList.push_back(make_pair("KICK", kick));
-    CommandList.push_back(make_pair("USER", user));
-    CommandList.push_back(make_pair("NICK", nick));
-    CommandList.push_back(make_pair("MODE", mode));
-    CommandList.push_back(make_pair("PASS", mode));
-
-    for (std::vector< std::pair < std::string, bool(*)(User&, std::string, Server&) > >::iterator it = (CommandList.begin()); it != CommandList.end(); it++){
-        if (mystring.find((*it).first, 0) == 0){
-            mystring = mystring.erase(0, (*it).first.length());
-            int Alpha = gotAlpha(mystring);
-            if (Alpha > 0)
-            {
-                if ((*it).second(receiver, &(mystring[Alpha]), myServer))
-                    (void) oldString;
-            }
-            else
-            {
-                if (Alpha == -1)
-                    receiver.sendMsg("Error " + (*it).first + " don't have argument\n");
-                else
-                    receiver.sendMsg("Error " + (*it).first + " need spaces between command and args\n");
-            }
-            break;
-        }
+    std::cout << "Command take " << cmd << std::endl;
+    if (CommandList.find(cmd) != CommandList.end()){
+           CommandList[cmd](receiver, mystring, myServer);
     }
+    else
+        receiver.sendMsg("Error " + cmd + " is not a command\n");
+
+
+//    for (std::map< std::pair < std::string, bool(*)(User&, std::string, Server&) > >::iterator it = (CommandList.begin()); it != CommandList.end(); it++){
+//        if (mystring.find((*it).first, 0) == 0){
+//            mystring = mystring.erase(0, (*it).first.length());
+//            int Alpha = gotAlpha(mystring);
+//            if (Alpha > 0)
+//            {
+//                if ((*it).second(receiver, &(mystring[Alpha]), myServer))
+//                    (void) oldString;
+//            }
+//            else
+//            {
+//                if (Alpha == -1)
+//                    receiver.sendMsg("Error " + (*it).first + " don't have argument\n");
+//                else
+//                    receiver.sendMsg("Error " + (*it).first + " need spaces between command and args\n");
+//            }
+//            break;
+//        }
+//    }
     receiver.sendMsg(oldString);
 }
 
 /**
 bool commandManager(User &user, const std::string& name){
-    defineCommand(user, name);
+    execCommand(user, name);
 } 
 int main(int argc, char **argv){
     User a;
-    defineCommand(a, (argv[1]));
+    execCommand(a, (argv[1]));
 
 }*/

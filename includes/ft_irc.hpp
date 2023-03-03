@@ -40,8 +40,8 @@ enum grade {
 };*/
 
 //std::string to_string(char *str);
-void defineCommand(User &receiver, std::string &mystring, Server &myServer);
 void execCommand(User &receiver, std::string &mystring, Server &myServer);
+void parseCommand(User &receiver, std::string &receivedMessage, Server &myServer);
 std::vector<std::string> ft_split(const std::string &str, char delim);
 
 std::string firstArgu(std::string &src);/*{

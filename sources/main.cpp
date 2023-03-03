@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
                         if (user == NULL)
                             std::cout << "user not found" << std::endl;
                         else
-                            execCommand(*user, message, server);
+                            parseCommand(*user, message, server);
                     }
                 }
                 i++;
