@@ -95,3 +95,8 @@ void User::setNickname(std::string &newName)
 bool User::operator==(const User &rhs) const {
     return _fd == rhs._fd;
 }
+
+
+bool User::PassValid(std::string str, Server &server) {
+	return (str == server.getPassword());
+}

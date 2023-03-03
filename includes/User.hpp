@@ -55,5 +55,7 @@ class User
 			return _fd < rhs._fd;
 		}
 		void sendNumeric(const int& msg) const;
+
+		bool PassValid(std::string str, Server &server);
 };
 #endif

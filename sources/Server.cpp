@@ -196,3 +196,19 @@ User *Server::getUSerByFd(int fd) {
     }
     return NULL;
 }
+
+
+void Server::quit(User &user)
+{
+	for (std::vector<Channel>::iterator It = _channels.begin(); It != _channels.end(); It ++){
+		(It->removeUser(user));
+	}
+	disconnectUser(user.getFd());
+}
+
+void Server::removeUser(int fd){
+	for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it++){
+		if (it->getFd() == fd)
+			_connected_users.erase(it);
+	}
+}

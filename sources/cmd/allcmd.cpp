@@ -34,7 +34,8 @@ bool nick(User &user, std::string name, Server &myServer){
 }
 
 bool pass(User &user, std::string name, Server &myServer){
-    //user.setNickname(name);
+    if (! user.PassValid(name, myServer))
+        myServer.quit(user);
     return false;
 }
 
