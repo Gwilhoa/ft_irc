@@ -147,6 +147,7 @@ void defineCommand(User &receiver, std::string &mystring, Server &myServer){
     CommandList.push_back(make_pair("USER", user));
     CommandList.push_back(make_pair("NICK", nick));
     CommandList.push_back(make_pair("MODE", mode));
+    CommandList.push_back(make_pair("PASS", pass));
 
     for (std::vector< std::pair < std::string, bool(*)(User&, std::string, Server&) > >::iterator it = (CommandList.begin()); it != CommandList.end(); it++){
         if (mystring.find((*it).first, 0) == 0){
@@ -167,7 +168,7 @@ void defineCommand(User &receiver, std::string &mystring, Server &myServer){
             break;
         }
     }
-    receiver.sendMsg(oldString);
+    //receiver.sendMsg(oldString);
 }
 
 /**

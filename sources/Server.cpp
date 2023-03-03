@@ -12,6 +12,7 @@
 
 
 
+#include <unistd.h>
 #include "../includes/Server.hpp"
 #include "../includes/User.hpp"
 #include "../includes/Channel.hpp"
@@ -89,16 +90,15 @@ int Server::accept_connexion(){
 
 int Server::disconnectUser(int fd)
 {
-	if (_connected_users.begin() == _connected_users.end()) {
-		return 0;
-	}
-	for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it++) {
-		if (it->getFd() == fd){
-			std::cout << "User " << it->getNickname() << " disconnected" << std::endl;
-			_connected_users.erase(it);
-		}
-	}
-		return 0;
+	for (int i = 0; i < _connected_users.size(); i++)
+    {
+        if (_connected_users[i].getFd() == fd)
+        {
+            _connected_users.erase(_connected_users.begin() + i);
+            return 0;
+        }
+    }
+    return 0;
 }
 
 
@@ -203,12 +203,15 @@ void Server::quit(User &user)
 	for (std::vector<Channel>::iterator It = _channels.begin(); It != _channels.end(); It ++){
 		(It->removeUser(user));
 	}
-	disconnectUser(user.getFd());
+	removeUser(user.getFd());
 }
 
 void Server::removeUser(int fd){
-	for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it++){
-		if (it->getFd() == fd)
-			_connected_users.erase(it);
-	}
+    for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it ++){
+        if (fd == it->getFd()){
+            _connected_users.erase(it);
+            close(fd);
+            return;
+        }
+    }
 }

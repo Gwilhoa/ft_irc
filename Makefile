@@ -1,4 +1,4 @@
-NAME		:= ft_irc
+NAME		:= ircserv
 
 CMD_LST		:= allcmd.cpp
 SRCS_LST	:= $(addprefix cmd/,$(CMD_LST)) main.cpp utils.cpp Server.cpp User.cpp Channel.cpp
