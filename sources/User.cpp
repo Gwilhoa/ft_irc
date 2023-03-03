@@ -57,7 +57,7 @@ struct pollfd User::getpollfd() const
 void User::sendMsg(const std::string& msg) const
 {
     send(this->_fd, msg.c_str(), msg.size(), 0);
-    std::cout << "Send to " << this->_fd << " : " << msg << std::cout;
+    std::cout << "Send to " << this->_fd << " : " << msg << std::endl;
 }
 
 void User::sendNumeric(const int& msg) const

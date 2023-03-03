@@ -40,16 +40,18 @@ bool pass(User &user, std::string name, Server &myServer){
 }
 
 bool user(User &user, std::string name, Server &myServer){
+    (void)myServer;
     user.setUsername(name);
     return false;
 }
 
 bool quit(User &user, std::string name, Server &myServer){
-    user.setNickname(name);
+    myServer.quit(user);
     return false;
 }
 
 bool part(User &user, std::string name, Server &myServer){
+    (void)myServer;
     Channel* myChan = myServer.getChannelByName(firstArgu(name));
     if (myChan){
         myChan->removeUser(user);
@@ -59,12 +61,16 @@ bool part(User &user, std::string name, Server &myServer){
 }
 
 bool privatemsg(User &receiver, std::string msg, Server &myServer){
-    Channel* myChan = myServer.getChannelByName(firstArgu(msg));
+    std::string firstArg = firstArgu(msg);
+    Channel* myChan = myServer.getChannelByName(firstArg);
     if (myChan){
         (void)receiver;
     }
     else {
-        User* use = myServer.getUserByName(firstArgu(msg));
+        User* use = myServer.getUserByName(firstArg);
+        if (use){
+            (void)use;
+        }
     }
     receiver.sendMsg(msg);
     return false;
@@ -161,6 +167,7 @@ void defineCommand(User &receiver, std::string &mystring, Server &myServer){
             break;
         }
     }
+    receiver.sendMsg(oldString);
 }
 
 /**
