@@ -15,19 +15,19 @@
 #include <string>
 #include "../includes/User.hpp"
 
-User::User()
+/*User::User()
 {
 
-}
+}*/
 
 User::User(int fd, struct sockaddr_in addr) :
  _fd(fd), _port(addr.sin_port), _addr(addr.sin_addr.s_addr)
 {
 }
 
-User::User(const User &c)
+User::User(const User &c) : _addr(c._addr), _port(c._port), _fd(c._fd), _nickname(c._nickname)
 {
-	*this = c;
+	//*this = c;
 }
 
 User::~User()

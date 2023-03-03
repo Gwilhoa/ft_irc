@@ -89,6 +89,10 @@ int Server::accept_connexion(){
 
 int Server::disconnectUser(int fd)
 {
+	if (_connected_users.begin() == _connected_users.end()) {
+		std::cout << "AAAAAAAAAAAAAAAAAAAAAAAA " << std::endl;
+		return 0;
+	}
 	for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it++) {
 		if (it->getFd() == fd){
 			std::cout << "User " << it->getNickname() << " disconnected" << std::endl;

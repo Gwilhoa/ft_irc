@@ -131,30 +131,31 @@ void execCommand(User &receiver, std::string &mystring, Server &myServer){
 void defineCommand(User &receiver, std::string &mystring, Server &myServer){
     std::cout << "Command take " << mystring << std::endl;
 
-    std::vector<t_command> CommandList;
+    std::vector < std::pair < std::string, bool(*)(User&, std::string, Server&) > > CommandList;
     std::string oldString = mystring;
-    CommandList.push_back(defineOneCommand("PING", ping));
-    CommandList.push_back(defineOneCommand("JOIN", joinChannel));
-    CommandList.push_back(defineOneCommand("KICK", kick));
-    CommandList.push_back(defineOneCommand("USER", user));
-    CommandList.push_back(defineOneCommand("NICK", nick));
-    CommandList.push_back(defineOneCommand("MODE", mode));
 
-    for (std::vector<s_command>::iterator it = (CommandList.begin()); it != CommandList.end(); it++){
-        if (mystring.find((*it).str, 0) == 0){
-            mystring = mystring.erase(0, (*it).str.length());
+    CommandList.push_back(make_pair("PING", ping));
+    CommandList.push_back(make_pair("JOIN", joinChannel));
+    CommandList.push_back(make_pair("KICK", kick));
+    CommandList.push_back(make_pair("USER", user));
+    CommandList.push_back(make_pair("NICK", nick));
+    CommandList.push_back(make_pair("MODE", mode));
+
+    for (std::vector< std::pair < std::string, bool(*)(User&, std::string, Server&) > >::iterator it = (CommandList.begin()); it != CommandList.end(); it++){
+        if (mystring.find((*it).first, 0) == 0){
+            mystring = mystring.erase(0, (*it).first.length());
             int Alpha = gotAlpha(mystring);
             if (Alpha > 0)
             {
-                if ((*it).ptr(receiver, &(mystring[Alpha]), myServer))
+                if ((*it).second(receiver, &(mystring[Alpha]), myServer))
                     (void) oldString;//receiver.sendMsg(oldString + ":");
             }
             else
             {
                 if (Alpha == -1)
-                    receiver.sendMsg("Error " + (*it).str + " don't have argument\n");
+                    receiver.sendMsg("Error " + (*it).first + " don't have argument\n");
                 else
-                    receiver.sendMsg("Error " + (*it).str + " need spaces between command and args\n");
+                    receiver.sendMsg("Error " + (*it).first + " need spaces between command and args\n");
             }
             break;
         }
