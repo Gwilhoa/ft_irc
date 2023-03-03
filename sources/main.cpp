@@ -52,8 +52,11 @@ int main(int argc, char *argv[])
                         buffer[n] = '\0';
                         std::string message(buffer);
                         std::cout << buffer << std::endl;
-                        execCommand(server.getConnectedUsers()[server.getPollFds()[i].fd],
-                                    message, server);
+                        User *user = server.getUSerByFd(server.getPollFds()[i].fd);
+                        if (user == NULL)
+                            std::cout << "user not found" << std::endl;
+                        else
+                            execCommand(*user, message, server);
                     }
                 }
                 i++;

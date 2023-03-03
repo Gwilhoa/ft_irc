@@ -35,6 +35,7 @@ class Server
 		int init();
 		int accept_connexion();
         int disconnectUser(int fd);
+        User *getUSerByFd(int fd);
 
 		//getters and setters
 		int	getPort() const;

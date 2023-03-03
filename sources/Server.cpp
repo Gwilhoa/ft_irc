@@ -90,7 +90,6 @@ int Server::accept_connexion(){
 int Server::disconnectUser(int fd)
 {
 	if (_connected_users.begin() == _connected_users.end()) {
-		std::cout << "AAAAAAAAAAAAAAAAAAAAAAAA " << std::endl;
 		return 0;
 	}
 	for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it++) {
@@ -101,6 +100,8 @@ int Server::disconnectUser(int fd)
 	}
 		return 0;
 }
+
+
 
 Channel* Server::getChannel(std::string name)
 {
@@ -186,4 +187,12 @@ User* Server::getUserByName(std::string str){
 			return &(*it);
 	}
 	return NULL;
+}
+
+User *Server::getUSerByFd(int fd) {
+    for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it ++){
+        if (fd == it->getFd())
+            return &*it;
+    }
+    return NULL;
 }

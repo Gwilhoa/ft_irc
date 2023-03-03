@@ -111,10 +111,10 @@ bool joinChannel(User &receiver, std::string msg, Server &myServer){
         temp.addUser(receiver, true);
         //receiver.myCurrentChannel = &temp;
         //receiver.sendNumeric(RPL_TOPIC);
-        receiver.sendMsg(std::string(":") + std::string("aurele")+ std::string("!localhost JOIN :") + msg);
+        receiver.sendMsg(std::string(":") + std::string(receiver.getNickname())+ std::string("!localhost JOIN :") + msg);
     }
     else{
-        receiver.sendMsg(std::string(":") + std::string("aurele")+ std::string("!localhost JOIN :") + msg);
+        receiver.sendMsg(std::string(":") + std::string(receiver.getNickname())+ std::string("!localhost JOIN :") + msg);
         myChan->addUser(receiver, false);
         //receiver.myCurrentChannel = myChan;
     }
@@ -148,7 +148,7 @@ void defineCommand(User &receiver, std::string &mystring, Server &myServer){
             if (Alpha > 0)
             {
                 if ((*it).second(receiver, &(mystring[Alpha]), myServer))
-                    (void) oldString;//receiver.sendMsg(oldString + ":");
+                    (void) oldString;
             }
             else
             {
@@ -160,8 +160,6 @@ void defineCommand(User &receiver, std::string &mystring, Server &myServer){
             break;
         }
     }
-    //if (other.length() > 0)
-      //  defineCommand(receiver, other, myServer);
 }
 
 /**

@@ -28,7 +28,7 @@ class User
 		std::string _username;
 
 	public :
-		//User();
+		User();
 		User(int fd, struct sockaddr_in addr);
 		User(const User &c);
 		~User();
