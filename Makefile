@@ -5,7 +5,7 @@ SRCS_LST	:= $(addprefix cmd/,$(CMD_LST)) main.cpp utils.cpp Server.cpp User.cpp 
 SRCS_FILE	:= sources
 
 
-INC_LST		:= ft_irc.hpp Server.hpp User.hpp Channel.hpp Message.hpp numeric.hpp
+INC_LST		:= ft_irc.hpp Server.hpp User.hpp Channel.hpp Message.hpp
 INC_FILE	:= includes
 
 CC			:= c++

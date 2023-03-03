@@ -21,7 +21,7 @@
 # include <map>
 # include <poll.h>
 # include <vector>
-# include <stdio.h>
+
 
 class Server;
 class Channel;
@@ -32,24 +32,21 @@ class Message;
 # include "Channel.hpp"
 # include "Server.hpp"
 # include "Message.hpp"
-# include "numeric.hpp"
 
-/*
-enum grade {
-    operator = , random
-};*/
 
-//std::string to_string(char *str);
+
 void execCommand(User &receiver, std::string &mystring, Server &myServer);
 void parseCommand(User &receiver, std::string &receivedMessage, Server &myServer);
 std::vector<std::string> ft_split(const std::string &str, char delim);
 
-std::string firstArgu(std::string &src);/*{
-    //std::string retStr = retStr.substr(0, src.find(' ', 0));
-    //src = src.substr(src.find(' ', 0) + 1);
-    return "e";//retStr;
-}*/
-
-
+//commands
+bool nick(User &receiver, std::string &name, Server &myServer);
+bool joinChannel(User &receiver, std::string &mystring, Server &myServer);
+bool part(User &receiver, std::string &mystring, Server &myServer);
+bool mode(User &receiver, std::string &mystring, Server &myServer);
+bool privmsg(User &receiver, std::string &mystring, Server &myServer);
+bool quit(User &receiver, std::string &mystring, Server &myServer);
+bool pass(User &receiver, std::string &pass, Server &myServer);
+bool user(User &receiver, std::string &name, Server &myServer);
 
 #endif
