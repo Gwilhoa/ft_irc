@@ -52,18 +52,27 @@ std::map <User, bool> Channel::getUsers() const
     return (_users);
 }
 
-void Channel::addUser(User &user, bool ope) {
-    _users[user] = ope;
-    std::cout << ope << " YUOOL\n";
-    std::cout << user.getNickname() << " " << _users.size() << "\n";
+void Channel::addUser(User &user) {
+    if (_users.size() == 0){
+        _users.insert(std::make_pair<User, bool>(user, true));
+    }
+        //_users[user] = true;
+    else
+        _users.insert(std::make_pair<User, bool>(user, false));
+    //std::cout << _users[user] << " YUOOL " << _users.size() << "\n";
+    Show();
+    //std::cout << user.getNickname() << " " << _users.size() << "\n";
     //_users[user.getFd()] = user;
 }
 
-/*void Channel::removeUser(User &user)
+void Channel::removeUser(User &user)
 {
-    if (_users.erase(user) == 0)
-        std::cout << "User not found" << std::endl;
-}*/
+    _users.erase(user);
+    if (_users.size() == 1)
+        _users.begin()->second = true;
+    if (_users.size() == 0)
+        _myCurrentServer->removeChannel(_name);
+}
 
 /*void Channel::sendMsg(const std::string &msg)
 {
@@ -103,4 +112,14 @@ void Channel::sendToAll(std::string msg){
         it->first.sendMsg(msg);
         //std::cout << "1";
     }
+}
+
+void Channel::Show(){
+    std::cout << _name << " size [" << _users.size() << "] : ";
+    for (std::map<User, bool>::iterator it = _users.begin(); it != _users.end(); it ++){
+        if (it != _users.begin())
+            std::cout << ", ";
+        std::cout << it->first.getNickname() << " - " << it->second;
+    }
+    std::cout << std::endl;
 }

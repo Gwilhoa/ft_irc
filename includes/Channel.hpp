@@ -20,7 +20,7 @@ class Channel
     private:
         std::string             _name;
         std::map<User, bool>     _users;
-        const Server            *_myCurrentServer;
+        Server                  *_myCurrentServer;
         std::vector<Message>    _messages;
 
     public:
@@ -32,16 +32,16 @@ class Channel
         //getters and setters
         std::string getName() const;
         std::map <User, bool> getUsers() const;
-        void addUser(User &user, bool ope);
-        //void removeUser(User &user);
+        void addUser(User &user);
+        void removeUser(User &user);
         //void sendMsg(const std::string &msg);
         
         User *getUserByName(const std::string &userName) const;
 
-        void removeUser(User &user){
-            _users.erase(user);
+        //void removeUser(User &user){
+        //    _users.erase(user);
             //removeUser(*(getUserByName(userName)));
-        }
+        //}
 
         bool is_op(User& myUser);
 
@@ -50,6 +50,8 @@ class Channel
         void sendToAll(std::string msg);
 
         inline bool operator==(const Channel& rhs) { return _name == rhs._name; }
+
+        void Show();
 };
 
 #endif

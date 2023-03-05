@@ -32,7 +32,11 @@ class User
 
 	public :
 		bool completed;
-		User();
+		User(){
+			haveNick = false;
+			havePass = false;
+			haveUser = false;
+		};
 		User(int fd, struct sockaddr_in addr);
 		User(const User &c);
 		~User();
@@ -49,6 +53,7 @@ class User
 		void setUsername(const std::string &username){
 			_username = username;
 			haveUser = true;
+			checkAll();
 		}
 		void setCurrentChannel();
 
@@ -66,7 +71,11 @@ class User
 		}
 
 		void validPass(){
-			completed = true;
+			havePass = true;
+		}
+
+		void Show(){
+			std::cout << "nick [" << _nickname << "], user [" << _username << "] complete [" << completed << "] is on " << _fd << std::endl;
 		}
 		//bool PassValid(std::string str, Server &server);
 };

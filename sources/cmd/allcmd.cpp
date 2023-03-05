@@ -30,6 +30,10 @@ std::string nicknameUsername(User &user)
 
 
 bool nick(User &user, std::string &name, Server &myServer){
+    if (name.find("#") == 0){
+        std::cout << "Error syntax" << std::endl;
+        return false;
+    }
     (void)myServer;
     user.setNickname(name);
     return true;
@@ -46,6 +50,10 @@ bool pass(User &user, std::string &pass, Server &myServer){
 }
 
 bool user(User &user, std::string &name, Server &myServer){
+    if (name.find("#") == 0){
+        std::cout << "Error syntax" << std::endl;
+        return false;
+    }
     (void)myServer;
     user.setUsername((ft_split(name, ' ')[3]).substr(1));
     return true;
@@ -58,10 +66,10 @@ bool quit(User &user, std::string &name, Server &myServer){
 }
 
 bool part(User &user, std::string &args, Server &myServer){
-    (void)myServer;
     std::string name = ft_split(args, ' ')[0];
     Channel* myChan = myServer.getChannelByName(name);
     if (myChan){
+        myChan->sendToAll(nicknameUsername(user) + std::string(" PART ") + args + std::string("\n"));
         myChan->removeUser(user);
         return true;
     }
@@ -70,7 +78,10 @@ bool part(User &user, std::string &args, Server &myServer){
 
 bool privatemsg(User &receiver, std::string &msg, Server &myServer){
     if (!receiver.completed)
+    {
+        std::cout << "Not completed" << std::endl;
         return false;
+    }
     std::string sender = ft_split(msg, ' ')[0];
     Channel* myChan = myServer.getChannelByName(sender);
     if (myChan){
@@ -80,22 +91,25 @@ bool privatemsg(User &receiver, std::string &msg, Server &myServer){
     else {
         User* use = myServer.getUserByName(sender);
         if (use){
-            std::cout << "TYUII\n";
             use->sendMsg(nicknameUsername(receiver) + std::string(" PRIVMSG ") + msg + std::string("\n"));
+            receiver.sendMsg(nicknameUsername(receiver) + std::string(" NOTICE ") + msg + std::string("\n"));
             return true;
         }
     }
     return false;
 }
 
-bool notice (User &receiver, std::string &msg, Server &myServer){
+/*bool notice (User &receiver, std::string &msg, Server &myServer){
     if (!receiver.completed)
         return false;
-    (void)receiver;
-    (void)msg;
-    (void)myServer;
+    User* use = myServer.getUserByName(ft_split(msg, ' ')[0]);
+    if (use){
+        use->sendMsg(nicknameUsername(receiver) + std::string(" NOTICE ") + msg + std::string("\n"));
+        receiver.sendMsg(nicknameUsername(receiver) + std::string(" NOTICE ") + msg + std::string("\n"));
+        return true;
+    }
     return false;
-}
+}*/
 
 bool who (User &receiver, std::string &msg, Server &myServer){
     (void)receiver;
@@ -112,10 +126,12 @@ bool mode (User &receiver, std::string &msg, Server &myServer){
     if (myChan && myChan->is_op(receiver)){
         User* use = myChan->getUserByName(args[1]);
         if (use){
+            myChan->sendToAll(nicknameUsername(receiver) + std::string(" MODE ") + args[0] +  " +o " + args[1] + std::string("\n"));
             myChan->op(*use);
             return true;
         }
     }
+        myServer.Show();
     return false;
 }
 
@@ -127,7 +143,10 @@ bool ping(User &receiver, std::string &msg, Server &myServer){
 
 bool kick(User &receiver, std::string &msg, Server &myServer){
     if (!receiver.completed)
+    {
+        std::cout << "Not completed" << std::endl;
         return false;
+    }
     (void)receiver;
     std::vector<std::string> args = ft_split(msg, ' ');
     Channel* myChan = myServer.getChannelByName(args[0]);
@@ -144,23 +163,33 @@ bool kick(User &receiver, std::string &msg, Server &myServer){
 }
 
 bool joinChannel(User &receiver, std::string &msg, Server &myServer){
+        myServer.Show();
     if (!receiver.completed)
+    {
+        std::cout << "Not completed" << std::endl;
         return false;
+    }
+    if (msg.find("#") != 0){
+        std::cout << "Error syntax" << std::endl;
+        return false;
+    }
     Channel *myChan = (myServer.getChannelByName(msg));
-    if (myChan == NULL){
-        Channel temp = myServer.addChannel(msg);
-        temp.addUser(receiver, true);
-        temp.is_op(receiver);
+    if (myChan == NULL) {
+            Channel* temp = myServer.addChannel(msg);
+            temp->addUser(receiver);
+            temp->sendToAll(nicknameUsername(receiver) + std::string(" JOIN :") + msg + std::string("\n"));
+        
+        //temp.is_op(receiver);
         //receiver.sendMsg(std::string("332") + ":" + std::string(receiver.getNickname()) + "!localhost JOIN : " + msg);
         //receiver.sendNumeric(332);
         //receiver.sendMsg(std::string(":ircserv 332 aurele #a :"));
-        temp.sendToAll(nicknameUsername(receiver) + std::string(" JOIN :") + msg + std::string("\n"));
         //receiver.sendMsg(nicknameUsername(receiver) + std::string(" JOIN :") + msg + std::string("\n"));
         //receiver.sendMsg(":aurele!aurele@mf-F943E88F.rev.sfr.net JOIN :#A");
     }
-    else{
+    else {
         //receiver.sendMsg(std::string(":") + std::string(receiver.getNickname())+ std::string("!localhost JOIN : ") + msg);
-        myChan->addUser(receiver, false);
+        myChan->addUser(receiver);
+        //myChan->is_op(receiver);
         myChan->sendToAll(nicknameUsername(receiver) + std::string(" JOIN :") + msg + std::string("\n"));
         //receiver.myCurrentChannel = myChan;
     }

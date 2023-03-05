@@ -139,10 +139,10 @@ Channel *Server::getChannelByName(const std::string &name) {
 	return NULL;
 }
 
-Channel &Server::addChannel(const std::string name) {
+Channel *Server::addChannel(const std::string name) {
 	Channel	newchan(name, this);
     _channels.push_back(newchan);
-	return _channels.back();
+	return &(_channels.back());
 }
 
 void Server::removeChannel(const std::string &name)
@@ -216,4 +216,29 @@ void Server::removeUser(int fd){
             return;
         }
     }
+}
+
+void Server::Show(){
+
+	std::cout << "SHOW : " << std::endl;
+	ShowChan();
+	std::cout << std::endl;
+	ShowUser();
+	//	std::cout << ">> END OF SHOW" << std::endl;
+}
+
+
+void Server::ShowChan(){
+	for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
+    {
+        it->Show();
+	}
+}
+
+
+void Server::ShowUser(){
+	for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it++)
+    {
+        it->Show();
+	}
 }

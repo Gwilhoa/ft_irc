@@ -45,7 +45,7 @@ class Server
         struct pollfd *getPollFds();
         std::vector <Channel> getChannels() const;
 		Channel *getChannel(std::string name);
-        Channel &addChannel(const std::string name);
+        Channel *addChannel(const std::string name);
         void removeChannel(const std::string &name);
         Channel *getChannelByName(const std::string &name);
 
@@ -56,6 +56,10 @@ class Server
 	
 		void quit(User &user);
 		User* getUserByName(std::string str);
+
+		void Show();
+		void ShowChan();
+		void ShowUser();
 };
 #endif
 
