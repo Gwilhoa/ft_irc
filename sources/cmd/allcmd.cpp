@@ -22,7 +22,14 @@ int gotAlpha(std::string str)
     return -1;
 }
 
-bool nick(User &user, std::string name, Server &myServer){
+std::string nicknameUsername(User &user)
+{
+	std::string res(":" + user.getNickname() + "!" + user.getUsername());
+	return res;
+}
+
+
+bool nick(User &user, std::string &name, Server &myServer){
     (void)myServer;
     user.setNickname(name);
     return true;
@@ -40,7 +47,7 @@ bool pass(User &user, std::string &pass, Server &myServer){
 
 bool user(User &user, std::string &name, Server &myServer){
     (void)myServer;
-    user.setUsername(name);
+    user.setUsername((ft_split(name, ' ')[3]).substr(1));
     return true;
 }
 
@@ -61,29 +68,36 @@ bool part(User &user, std::string &args, Server &myServer){
     return false;
 }
 
-bool privatemsg(User &receiver, std::string msg, Server &myServer){
+bool privatemsg(User &receiver, std::string &msg, Server &myServer){
     if (!receiver.completed)
         return false;
     std::string sender = ft_split(msg, ' ')[0];
     Channel* myChan = myServer.getChannelByName(sender);
     if (myChan){
-        myChan->sendMsg(msg);
+        myChan->sendToAll(nicknameUsername(receiver) + std::string(" PRIVMSG ") + msg + std::string("\n"));
         return true;
     }
     else {
         User* use = myServer.getUserByName(sender);
         if (use){
-            use->sendMsg(msg);
+            std::cout << "TYUII\n";
+            use->sendMsg(nicknameUsername(receiver) + std::string(" PRIVMSG ") + msg + std::string("\n"));
             return true;
         }
     }
-    receiver.sendMsg(msg);
     return false;
 }
 
-bool notice (User &receiver, std::string msg, Server &myServer){
+bool notice (User &receiver, std::string &msg, Server &myServer){
     if (!receiver.completed)
         return false;
+    (void)receiver;
+    (void)msg;
+    (void)myServer;
+    return false;
+}
+
+bool who (User &receiver, std::string &msg, Server &myServer){
     (void)receiver;
     (void)msg;
     (void)myServer;
@@ -119,7 +133,9 @@ bool kick(User &receiver, std::string &msg, Server &myServer){
     Channel* myChan = myServer.getChannelByName(args[0]);
     if (myChan){
         User* use = myChan->getUserByName(args[1]);
-        if (use){
+        
+        if (myChan->is_op(receiver) && use){
+            myChan->sendToAll(nicknameUsername(receiver) + std::string(" KICK ") + msg + std::string("\n"));
             myChan->removeUser(*use);
             return true;
         }
@@ -128,17 +144,33 @@ bool kick(User &receiver, std::string &msg, Server &myServer){
 }
 
 bool joinChannel(User &receiver, std::string &msg, Server &myServer){
+    if (!receiver.completed)
+        return false;
     Channel *myChan = (myServer.getChannelByName(msg));
     if (myChan == NULL){
         Channel temp = myServer.addChannel(msg);
         temp.addUser(receiver, true);
-        receiver.sendMsg(":" + std::string(receiver.getNickname()) + "!localhost JOIN : " + msg);
+        temp.is_op(receiver);
+        //receiver.sendMsg(std::string("332") + ":" + std::string(receiver.getNickname()) + "!localhost JOIN : " + msg);
+        //receiver.sendNumeric(332);
+        //receiver.sendMsg(std::string(":ircserv 332 aurele #a :"));
+        temp.sendToAll(nicknameUsername(receiver) + std::string(" JOIN :") + msg + std::string("\n"));
+        //receiver.sendMsg(nicknameUsername(receiver) + std::string(" JOIN :") + msg + std::string("\n"));
+        //receiver.sendMsg(":aurele!aurele@mf-F943E88F.rev.sfr.net JOIN :#A");
     }
     else{
-        receiver.sendMsg(std::string(":") + std::string(receiver.getNickname())+ std::string("!localhost JOIN : ") + msg);
+        //receiver.sendMsg(std::string(":") + std::string(receiver.getNickname())+ std::string("!localhost JOIN : ") + msg);
         myChan->addUser(receiver, false);
+        myChan->sendToAll(nicknameUsername(receiver) + std::string(" JOIN :") + msg + std::string("\n"));
         //receiver.myCurrentChannel = myChan;
     }
+    return true;
+}
+
+bool cap(User &receiver, std::string &msg, Server &myServer){
+    (void)myServer;
+    (void)msg;
+    (void)receiver;
     return true;
 }
 
@@ -163,17 +195,20 @@ void execCommand(User &receiver, std::string &mystring, Server &myServer){
     CommandList["PART"] = part;
     CommandList["PING"] = ping;
     CommandList["JOIN"] = joinChannel;
+    CommandList["PRIVMSG"] = privatemsg;
     CommandList["KICK"] = kick;
     CommandList["USER"] = user;
     CommandList["NICK"] = nick;
     CommandList["MODE"] = mode;
     CommandList["PASS"] = pass;
+    CommandList["CAP"] = cap;
+    CommandList["WHO"] = who;
 
-    std::cout << "Command take " << cmd << std::endl;
-    std::cout << "arguments : " << args << std::endl;
+    std::cout << (std::string("Command [") + cmd + std::string("] and "));
 
     if (args.find('\r') != std::string::npos)
         args.erase(args.find('\r'), 1);
+    std::cout << (std::string("args : [") + args + std::string("]\n"));
     if (CommandList.find(cmd) != CommandList.end()){
            CommandList[cmd](receiver, args, myServer);
     }

@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
                         }
                         buffer[n] = '\0';
                         std::string message(buffer);
-                        std::cout << buffer << std::endl;
+                        std::cout << std::endl;
                         User *user = server.getUSerByFd(server.getPollFds()[i].fd);
                         if (user == NULL)
                             std::cout << "user not found" << std::endl;

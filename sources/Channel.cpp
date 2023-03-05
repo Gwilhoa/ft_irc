@@ -54,6 +54,8 @@ std::map <User, bool> Channel::getUsers() const
 
 void Channel::addUser(User &user, bool ope) {
     _users[user] = ope;
+    std::cout << ope << " YUOOL\n";
+    std::cout << user.getNickname() << " " << _users.size() << "\n";
     //_users[user.getFd()] = user;
 }
 
@@ -63,18 +65,42 @@ void Channel::addUser(User &user, bool ope) {
         std::cout << "User not found" << std::endl;
 }*/
 
-void Channel::sendMsg(const std::string &msg)
+/*void Channel::sendMsg(const std::string &msg)
 {
     for (std::map<User, bool>::iterator it = _users.begin(); it != _users.end(); it++){
         it->first.sendMsg(msg);
     }
-}
+}*/
 
 User *Channel::getUserByName(const std::string &userName) const {
     for (std::map<User, bool>::const_iterator it = _users.begin(); it != _users.end(); it++)
     {
-        if (it->first.getUsername() == userName)
+        if (it->first.getNickname() == userName)
             return (const_cast<User *>(&it->first));
     }
     return (NULL);
+}
+
+bool Channel::is_op(User& myUser){
+    std::cout << "aanddd " << _users[myUser] << "\n";
+    if (myUser.completed)
+        return _users[myUser];
+    return false;
+}
+
+bool Channel::op(User& myUser){
+    if (myUser.completed){
+        _users[myUser] = true;
+        return true;
+    }
+    return false;
+    //std::map<User, bool>::iterator myIt =  _users.find(myUser);
+    //myIt->second = true;
+}
+
+void Channel::sendToAll(std::string msg){
+    for (std::map<User, bool>::iterator it = _users.begin(); it != _users.end(); it ++){
+        it->first.sendMsg(msg);
+        //std::cout << "1";
+    }
 }

@@ -34,7 +34,7 @@ class Channel
         std::map <User, bool> getUsers() const;
         void addUser(User &user, bool ope);
         //void removeUser(User &user);
-        void sendMsg(const std::string &msg);
+        //void sendMsg(const std::string &msg);
         
         User *getUserByName(const std::string &userName) const;
 
@@ -43,21 +43,11 @@ class Channel
             //removeUser(*(getUserByName(userName)));
         }
 
-        bool is_op(User& myUser){
-            if (myUser.completed)
-                return _users[myUser];
-            return false;
-        }
+        bool is_op(User& myUser);
 
-        bool op(User& myUser){
-            if (myUser.completed){
-                _users[myUser] = true;
-                return true;
-            }
-            return false
-            //std::map<User, bool>::iterator myIt =  _users.find(myUser);
-            //myIt->second = true;
-        }
+        bool op(User& myUser);
+
+        void sendToAll(std::string msg);
 
         inline bool operator==(const Channel& rhs) { return _name == rhs._name; }
 };

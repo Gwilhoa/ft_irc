@@ -188,10 +188,14 @@ User* Server::getUserByName(std::string str){
 }
 
 User *Server::getUSerByFd(int fd) {
+	std::cout << "fd take is " << fd ;
     for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it ++){
-        if (fd == it->getFd())
+        if (fd == it->getFd()) {
+			std::cout << " (" << it->getNickname() << ")" << std::endl;
             return &*it;
+		}
     }
+	std::cout << std::endl;
     return NULL;
 }
 
