@@ -21,7 +21,6 @@ class Channel
         std::string             _name;
         std::map<User, bool>     _users;
         Server                  *_myCurrentServer;
-        std::vector<Message>    _messages;
 
     public:
         //Channel();

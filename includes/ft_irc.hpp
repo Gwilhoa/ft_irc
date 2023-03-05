@@ -26,12 +26,11 @@
 class Server;
 class Channel;
 class User;
-class Message;
 
 # include "User.hpp"
 # include "Channel.hpp"
 # include "Server.hpp"
-# include "Message.hpp"
+
 
 
 

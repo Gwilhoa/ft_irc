@@ -54,9 +54,13 @@ bool user(User &user, std::string &name, Server &myServer){
         std::cout << "Error syntax" << std::endl;
         return false;
     }
-    (void)myServer;
-    user.setUsername((ft_split(name, ' ')[3]).substr(1));
-    return true;
+    (void) myServer;
+    std::vector<std::string> split = ft_split(name, ' ');
+    if (split.size() == 4) {
+        user.setUsername(split[3].substr(1));
+        return true;
+    }
+    return false;
 }
 
 bool quit(User &user, std::string &name, Server &myServer){
@@ -127,7 +131,7 @@ bool mode (User &receiver, std::string &msg, Server &myServer){
         return false;
     std::vector<std::string> args = ft_split(msg, ' ');
     Channel* myChan = myServer.getChannelByName(args[0]);
-    if (myChan && myChan->is_op(receiver)){
+    if (myChan && args.size() == 2 && myChan->is_op(receiver)){
         User* use = myChan->getUserByName(args[1]);
         if (use){
             myChan->sendToAll(nicknameUsername(receiver) + std::string(" MODE ") + args[0] +  " +o " + args[1] + std::string("\n"));
@@ -154,7 +158,7 @@ bool kick(User &receiver, std::string &msg, Server &myServer){
     (void)receiver;
     std::vector<std::string> args = ft_split(msg, ' ');
     Channel* myChan = myServer.getChannelByName(args[0]);
-    if (myChan){
+    if (myChan && args.size() == 2){
         User* use = myChan->getUserByName(args[1]);
         
         if (myChan->is_op(receiver) && use){
