@@ -25,6 +25,7 @@ class Server
 		int _server_fd;
 		std::vector <User> _connected_users;
 		std::vector <Channel> _channels;
+		//std::vector <struct pollfd> fds;
 
 	public :
 		Server(int port, const std::string& password);
@@ -42,7 +43,7 @@ class Server
 		std::string getPassword() const;
 		int getServerFd() const;
 		std::vector<User> getConnectedUsers() const;
-        struct pollfd *getPollFds();
+        std::vector<struct pollfd> getPollFds();
         std::vector <Channel> getChannels() const;
 		Channel *getChannel(std::string name);
         Channel *addChannel(const std::string name);

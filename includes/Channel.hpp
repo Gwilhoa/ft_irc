@@ -33,7 +33,7 @@ class Channel
         std::string getName() const;
         std::map <User, bool> getUsers() const;
         void addUser(User &user);
-        void removeUser(User &user);
+        std::string * removeUser(User &user);
         //void sendMsg(const std::string &msg);
         
         User *getUserByName(const std::string &userName) const;

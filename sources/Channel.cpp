@@ -65,13 +65,14 @@ void Channel::addUser(User &user) {
     //_users[user.getFd()] = user;
 }
 
-void Channel::removeUser(User &user)
+std::string *Channel::removeUser(User &user)
 {
     _users.erase(user);
     if (_users.size() == 1)
         _users.begin()->second = true;
     if (_users.size() == 0)
-        _myCurrentServer->removeChannel(_name);
+        return (&(_name));
+    return NULL;
 }
 
 /*void Channel::sendMsg(const std::string &msg)

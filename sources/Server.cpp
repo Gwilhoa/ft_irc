@@ -110,16 +110,16 @@ Channel* Server::getChannel(std::string name)
 	return NULL;
 }
 
-struct pollfd *Server::getPollFds()
+std::vector<struct pollfd> Server::getPollFds()
 {
-    struct pollfd *fds = (struct pollfd *)malloc(sizeof (struct pollfd) * (_connected_users.size() + 2));
+	std::vector<struct pollfd> fds((_connected_users.size() + 2));
+    //struct pollfd *fds = (struct pollfd *)malloc(sizeof (struct pollfd) * (_connected_users.size() + 2));
     int i = 0;
     fds[i].fd = _server_fd;
     fds[i].events = POLLIN;
     i++;
     for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it++)
-    {
-        
+    {  
 		fds[i] = it->getpollfd();
         i++;
     }

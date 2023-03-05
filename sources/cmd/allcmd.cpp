@@ -70,7 +70,11 @@ bool part(User &user, std::string &args, Server &myServer){
     Channel* myChan = myServer.getChannelByName(name);
     if (myChan){
         myChan->sendToAll(nicknameUsername(user) + std::string(" PART ") + args + std::string("\n"));
-        myChan->removeUser(user);
+        std::string* ret = myChan->removeUser(user);
+        if (ret){
+            myServer.removeChannel(*ret);
+        }
+        
         return true;
     }
     return false;

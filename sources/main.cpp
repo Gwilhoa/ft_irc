@@ -26,9 +26,9 @@ int main(int argc, char *argv[])
 			exit(1);
         while (true)
         {
-            pollfd *fds = server.getPollFds();
+            std::vector<struct pollfd>fds = server.getPollFds();
             std::cout << "en attente..." << std::endl;
-            int ret = poll(fds, server.getConnectedUsers().size() + 1, -1);
+            int ret = poll((&(*fds.begin())), server.getConnectedUsers().size() + 1, -1);
             std::cout << "processing..." << std::endl;
             if (ret < 0) {
                 std::cout << "poll error" << std::endl;
