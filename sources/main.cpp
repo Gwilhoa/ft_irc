@@ -3,19 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gchatain <gchatain@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: gchatain <gchatain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:27:39 by gchatain          #+#    #+#             */
-/*   Updated: 2023/02/07 14:27:57 by gchatain         ###   ########.fr       */
+/*   Updated: 2023/03/06 14:24:54 by gchatain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
-#include <unistd.h>
-#include "../includes/ft_irc.hpp"
-#include "../includes/Server.hpp"
-#include "../includes/User.hpp"
+#include "ft_irc.hpp"
 
 
 int main(int argc, char *argv[])
@@ -27,7 +24,7 @@ int main(int argc, char *argv[])
         while (true)
         {
             std::vector<struct pollfd>fds = server.getPollFds();
-            std::cout << "en attente..." << std::endl;
+            std::cout << "waiting..." << std::endl;
             int ret = poll((&(*fds.begin())), server.getConnectedUsers().size() + 1, -1);
             std::cout << "processing..." << std::endl;
             if (ret < 0) {

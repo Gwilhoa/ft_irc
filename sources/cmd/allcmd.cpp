@@ -1,4 +1,4 @@
-#include "../../includes/ft_irc.hpp"
+#include "ft_irc.hpp"
 
 typedef struct s_command {
     std::string str;
@@ -186,20 +186,10 @@ bool joinChannel(User &receiver, std::string &msg, Server &myServer){
             Channel* temp = myServer.addChannel(msg);
             temp->addUser(receiver);
             temp->sendToAll(nicknameUsername(receiver) + std::string(" JOIN :") + msg + std::string("\n"));
-        
-        //temp.is_op(receiver);
-        //receiver.sendMsg(std::string("332") + ":" + std::string(receiver.getNickname()) + "!localhost JOIN : " + msg);
-        //receiver.sendNumeric(332);
-        //receiver.sendMsg(std::string(":ircserv 332 aurele #a :"));
-        //receiver.sendMsg(nicknameUsername(receiver) + std::string(" JOIN :") + msg + std::string("\n"));
-        //receiver.sendMsg(":aurele!aurele@mf-F943E88F.rev.sfr.net JOIN :#A");
     }
     else {
-        //receiver.sendMsg(std::string(":") + std::string(receiver.getNickname())+ std::string("!localhost JOIN : ") + msg);
         myChan->addUser(receiver);
-        //myChan->is_op(receiver);
         myChan->sendToAll(nicknameUsername(receiver) + std::string(" JOIN :") + msg + std::string("\n"));
-        //receiver.myCurrentChannel = myChan;
     }
     return true;
 }
@@ -219,15 +209,10 @@ void parseCommand(User &receiver, std::string &receivedMessage, Server &myServer
 }
 
 void execCommand(User &receiver, std::string &mystring, Server &myServer){
-    //std::cout << "Command take " << mystring << std::endl;
-
-    //std::vector < std::pair < std::string, bool(*)(User&, std::string, Server&) > > CommandList;
     std::map<std::string, bool(*)(User&, std::string&, Server&)> CommandList;
     std::string args = mystring.substr(mystring.find(' ', 0) + 1);
     std::string cmd = ft_split(mystring, ' ')[0];
-    //std::string cmd = firstArgu(mystring);
     CommandList["QUIT"] = quit;
-    //CommandList["PRIVMSG"] = privatemsg;
     //CommandList["NOTICE"] = notice;
     CommandList["PART"] = part;
     CommandList["PING"] = ping;
@@ -251,35 +236,4 @@ void execCommand(User &receiver, std::string &mystring, Server &myServer){
     }
     else
         receiver.sendMsg("Error " + cmd + " is not a command\n");
-
-
-//    for (std::map< std::pair < std::string, bool(*)(User&, std::string, Server&) > >::iterator it = (CommandList.begin()); it != CommandList.end(); it++){
-//        if (mystring.find((*it).first, 0) == 0){
-//            mystring = mystring.erase(0, (*it).first.length());
-//            int Alpha = gotAlpha(mystring);
-//            if (Alpha > 0)
-//            {
-//                if ((*it).second(receiver, &(mystring[Alpha]), myServer))
-//                    (void) oldString;
-//            }
-//            else
-//            {
-//                if (Alpha == -1)
-//                    receiver.sendMsg("Error " + (*it).first + " don't have argument\n");
-//                else
-//                    receiver.sendMsg("Error " + (*it).first + " need spaces between command and args\n");
-//            }
-//            break;
-//        }
-//    }
 }
-
-/**
-bool commandManager(User &user, const std::string& name){
-    execCommand(user, name);
-} 
-int main(int argc, char **argv){
-    User a;
-    execCommand(a, (argv[1]));
-
-}*/

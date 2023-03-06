@@ -3,26 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gchatain <gchatain@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: gchatain <gchatain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:15:39 by gchatain          #+#    #+#             */
-/*   Updated: 2023/02/22 15:15:40 by gchatain         ###   ########.fr       */
+/*   Updated: 2023/03/06 14:24:44 by gchatain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_irc.hpp"
-#include "../includes/Channel.hpp"
-#include "../includes/User.hpp"
+#include "ft_irc.hpp"
+
 
 class User;
 
-/*Channel::Channel()
-{
-    _name = "";
-    _users = std::map<User, bool>();
-}*/
-
-Channel::Channel(const std::string &name, Server *myCurrentServer) : _name(name), _myCurrentServer(myCurrentServer)
+Channel::Channel(const std::string &name) : _name(name)
 {
     _users = std::map<User, bool>();
 }
@@ -56,13 +49,9 @@ void Channel::addUser(User &user) {
     if (_users.size() == 0){
         _users.insert(std::make_pair<User, bool>(user, true));
     }
-        //_users[user] = true;
     else
         _users.insert(std::make_pair<User, bool>(user, false));
-    //std::cout << _users[user] << " YUOOL " << _users.size() << "\n";
     Show();
-    //std::cout << user.getNickname() << " " << _users.size() << "\n";
-    //_users[user.getFd()] = user;
 }
 
 std::string *Channel::removeUser(User &user)
@@ -74,13 +63,6 @@ std::string *Channel::removeUser(User &user)
         return (&(_name));
     return NULL;
 }
-
-/*void Channel::sendMsg(const std::string &msg)
-{
-    for (std::map<User, bool>::iterator it = _users.begin(); it != _users.end(); it++){
-        it->first.sendMsg(msg);
-    }
-}*/
 
 User *Channel::getUserByName(const std::string &userName) const {
     for (std::map<User, bool>::const_iterator it = _users.begin(); it != _users.end(); it++)
@@ -104,14 +86,12 @@ bool Channel::op(User& myUser){
         return true;
     }
     return false;
-    //std::map<User, bool>::iterator myIt =  _users.find(myUser);
-    //myIt->second = true;
 }
 
 void Channel::sendToAll(std::string msg){
-    for (std::map<User, bool>::iterator it = _users.begin(); it != _users.end(); it ++){
+    for (std::map<User, bool>::iterator it = _users.begin(); it != _users.end(); it ++)
+    {
         it->first.sendMsg(msg);
-        //std::cout << "1";
     }
 }
 

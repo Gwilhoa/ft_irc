@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gchatain <gchatain@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: gchatain <gchatain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:15:23 by gchatain          #+#    #+#             */
-/*   Updated: 2023/02/22 15:15:24 by gchatain         ###   ########.fr       */
+/*   Updated: 2023/03/06 14:25:22 by gchatain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sstream>
-#include "../includes/ft_irc.hpp"
+#include "ft_irc.hpp"
 
 std::vector<std::string> ft_split(const std::string &str, char delim)
 {
