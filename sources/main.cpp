@@ -6,7 +6,7 @@
 /*   By: gchatain <gchatain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:27:39 by gchatain          #+#    #+#             */
-/*   Updated: 2023/03/06 16:31:59 by gchatain         ###   ########.fr       */
+/*   Updated: 2023/03/06 17:27:53 by gchatain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,16 @@ int main(int argc, char *argv[])
                     else {
                         char buffer[1024];
                         int n = recv(server.getPollFds()[i].fd, buffer, 1024, 0);
-                        if (n == 0) {
-                            server.disconnectUser(server.getPollFds()[i].fd);
-                        }
+                    if (n == 0) {
+                        server.disconnectUser(server.getPollFds()[i].fd);
+                    }
                         buffer[n] = '\0';
                         std::string message(buffer);
                         str += message;
                         User *user = server.getUSerByFd(server.getPollFds()[i].fd);
                         if (str.find("\r\n") != std::string::npos){
                             if (user == NULL)
-                               std::cout << "user not found" << std::endl;
+                                std::cout << "user not found" << std::endl;
                             else {
                                 parseCommand(*user, str, server);
                                 str = "";
