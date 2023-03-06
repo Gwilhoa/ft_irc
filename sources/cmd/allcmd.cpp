@@ -206,6 +206,22 @@ bool topic(User &receiver, std::string &msg, Server &myServer){
 
 }
 
+
+bool list(User &receiver, std::string &msg, Server &myServer) {
+    if (!receiver.completed)
+    {
+        std::cout << "Not completed" << std::endl;
+        return false;
+    }
+    (void) msg;
+    std::vector<Channel> lsChannel = myServer.getChannels();
+    for (std::vector<Channel>::iterator it = lsChannel.begin(); it != lsChannel.end(); it ++) {
+        //std::atoi()
+        receiver.sendMsg(it->getName() + std::string(" ") + intToString(it->getUsers().size()) + std::string(" ") + it->TOPIC);
+    }
+    return true;
+}
+
 bool joinChannel(User &receiver, std::string &msg, Server &myServer){
     myServer.Show();
     if (!receiver.completed)
@@ -264,6 +280,7 @@ void execCommand(User &receiver, std::string &mystring, Server &myServer){
     CommandList["MODE"] = mode;
     CommandList["PASS"] = pass;
     CommandList["CAP"] = cap;
+    CommandList["LIST"] = list;
     CommandList["WHO"] = who;
     CommandList["TOPIC"] = topic;
     CommandList["INVITE"] = invite;
