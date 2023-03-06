@@ -40,6 +40,7 @@ class Channel
         inline bool operator==(const Channel& rhs) { return _name == rhs._name; }
         bool haveUser(User &use); 
         void Show();
+        void sendToAllUnless(std::string msg, User& user);
 };
 
 #endif

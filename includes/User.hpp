@@ -48,10 +48,13 @@ class User
         std::string getNickname() const;
         void setNickname(std::string &newName);
 		std::string getUsername() const {return _username;}
-		void setUsername(const std::string &username){
+		bool setUsername(const std::string &username){
+			if (haveUser)
+				return false;
 			_username = username;
 			haveUser = true;
 			checkAll();
+			return true;
 		}
 		void setCurrentChannel();
 

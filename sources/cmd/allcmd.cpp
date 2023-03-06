@@ -35,6 +35,7 @@ bool nick(User &user, std::string &name, Server &myServer){
         return false;
     }
     (void)myServer;
+    myServer.SendToAllWith(nicknameUsername(user) + std::string(" NICK ") + name + std::string("\n"), user);
     user.setNickname(name);
     return true;
 }
@@ -54,17 +55,19 @@ bool user(User &user, std::string &name, Server &myServer){
         std::cout << "Error syntax" << std::endl;
         return false;
     }
+    
     (void) myServer;
     std::vector<std::string> split = ft_split(name, ' ');
     if (split.size() == 4) {
-        user.setUsername(split[3].substr(1));
-        return true;
+        return (user.setUsername(split[3].substr(1)));
+         //myServer.SendToAllWith(nicknameUsername(user) + std::string(" NICK ") + name + std::string("\n"), user);
     }
     return false;
 }
 
 bool quit(User &user, std::string &name, Server &myServer){
     (void) (name);
+     myServer.SendToAllWith(nicknameUsername(user) + std::string(" QUIT ") + name + std::string("\n"), user);
     myServer.quit(user);
     return true;
 }
@@ -93,14 +96,13 @@ bool privatemsg(User &receiver, std::string &msg, Server &myServer){
     std::string sender = ft_split(msg, ' ')[0];
     Channel* myChan = myServer.getChannelByName(sender);
     if (myChan){
-        myChan->sendToAll(nicknameUsername(receiver) + std::string(" PRIVMSG ") + msg + std::string("\n"));
+        myChan->sendToAllUnless(nicknameUsername(receiver) + std::string(" PRIVMSG ") + msg + std::string("\n"), receiver);
         return true;
     }
     else {
         User* use = myServer.getUserByName(sender);
         if (use){
             use->sendMsg(nicknameUsername(receiver) + std::string(" PRIVMSG ") + msg + std::string("\n"));
-            receiver.sendMsg(nicknameUsername(receiver) + std::string(" NOTICE ") + msg + std::string("\n"));
             return true;
         }
     }

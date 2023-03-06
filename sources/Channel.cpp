@@ -95,6 +95,14 @@ void Channel::sendToAll(std::string msg){
     }
 }
 
+void Channel::sendToAllUnless(std::string msg, User& user){
+    for (std::map<User, bool>::iterator it = _users.begin(); it != _users.end(); it ++)
+    {
+        if (!(it->first == user))
+            it->first.sendMsg(msg);
+    }
+}
+
 void Channel::Show(){
     std::cout << _name << " size [" << _users.size() << "] : ";
     for (std::map<User, bool>::iterator it = _users.begin(); it != _users.end(); it ++){
