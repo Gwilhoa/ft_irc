@@ -6,7 +6,7 @@
 /*   By: gchatain <gchatain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:27:39 by gchatain          #+#    #+#             */
-/*   Updated: 2023/03/06 14:24:54 by gchatain         ###   ########.fr       */
+/*   Updated: 2023/03/06 16:03:41 by gchatain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 int main(int argc, char *argv[])
 {
+    std::string str = "";
 	if (argc == 3) {
 		Server server = Server(atoi(argv[1]), (argv[2]));
 		if (server.init() == 1)
@@ -48,12 +49,17 @@ int main(int argc, char *argv[])
                         }
                         buffer[n] = '\0';
                         std::string message(buffer);
+                        str += message;
                         std::cout << std::endl;
                         User *user = server.getUSerByFd(server.getPollFds()[i].fd);
-                        if (user == NULL)
-                            std::cout << "user not found" << std::endl;
-                        else
-                            parseCommand(*user, message, server);
+                        if (str.find("\r\n") != std::string::npos){
+                            if (user == NULL)
+                               std::cout << "user not found" << std::endl;
+                            else {
+                                parseCommand(*user, str, server);
+                                str = "";
+                            }
+                        }
                     }
                 }
                 i++;

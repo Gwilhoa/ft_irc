@@ -6,7 +6,7 @@
 /*   By: gchatain <gchatain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:36:17 by gchatain          #+#    #+#             */
-/*   Updated: 2023/03/06 14:24:59 by gchatain         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:59:11 by gchatain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ Server & Server::operator=(const Server &c)
 
 int Server::init()
 {
+	if (_port > 65535)
+	{
+		std::cout << "Error: port must be between 0 and 65535" << std::endl;
+		return 1;
+	}
 	struct sockaddr_in address = {};
 	int opt = 1;
 
