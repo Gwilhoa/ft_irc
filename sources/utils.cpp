@@ -29,3 +29,14 @@ std::vector<std::string> ft_split(const std::string &str, char delim)
     }
     return (res);
 }
+
+std::string intToString(size_t nb) {
+    std::string ret("");
+    while (nb != 0) {
+        std::string newstr;
+        newstr.push_back((nb % 10) + '0');
+        ret.insert(0, newstr);
+        nb /= 10;
+    }
+    return ret;
+}
