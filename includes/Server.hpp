@@ -57,7 +57,7 @@ class Server
 	
 		void quit(User &user);
 		User* getUserByName(std::string str);
-
+		void SendToAllWith(std::string str, User& myUse);
 		void Show();
 		void ShowChan();
 		void ShowUser();

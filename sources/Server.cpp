@@ -242,3 +242,25 @@ void Server::ShowUser(){
         it->Show();
 	}
 }
+
+void Server::SendToAllWith(std::string str, User& myUse){
+	std::vector<User> myVec;
+	bool Continue = true;
+	for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); it ++)
+	{
+		if (it->haveUser(myUse)){
+			std::map<User, bool> ListOfUser = it->getUsers();
+			for (std::map<User, bool>::iterator UserInChannel = ListOfUser.begin(); UserInChannel != ListOfUser.end(); UserInChannel++) {
+				for (std::vector<User>::iterator UserIterator = myVec.begin(); UserIterator != myVec.end() && Continue; UserIterator++) {
+					if (UserInChannel->first == *UserIterator)
+						Continue = false;
+				}
+				if (Continue == true) {
+					myVec.push_back(UserInChannel->first);
+					UserInChannel->first.sendMsg(str);
+				}
+				Continue = true;
+			}
+		}
+	}
+}

@@ -124,3 +124,11 @@ void Channel::Show(){
     }
     std::cout << std::endl;
 }
+
+bool Channel::haveUser(User &use) {
+    for (std::map<User, bool>::iterator It = _users.begin(); It != _users.end(); It ++) {
+        if (It->first == use)
+            return true;
+    }
+    return false;
+}
