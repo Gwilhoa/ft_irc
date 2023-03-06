@@ -22,7 +22,7 @@ User::User(int fd, struct sockaddr_in addr) :
     haveNick = false;
     havePass = false;
     haveUser = false;
-    completed = true;
+    completed = false;
 }
 
 User::User(const User &c)

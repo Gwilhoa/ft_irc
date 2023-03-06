@@ -239,6 +239,16 @@ void Server::ShowUser(){
 	}
 }
 
+bool Server::IsInTheSameChannel(User* user1, User* user2){
+	for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); it ++)
+	{
+		if (it->haveUser(*user1) && it->haveUser(*user2)){
+			return true;
+		}
+	}
+	return false;
+}
+
 void Server::SendToAllWith(std::string str, User& myUse){
 	std::vector<User> myVec;
 	bool Continue = true;

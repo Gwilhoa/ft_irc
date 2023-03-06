@@ -25,6 +25,7 @@ class Channel
     public:
         //Channel();
         Channel(const std::string &name);
+        std::string TOPIC;
         Channel(const Channel &c);
         ~Channel();
         Channel & operator=(const Channel &c);

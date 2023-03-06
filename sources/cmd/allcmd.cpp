@@ -95,13 +95,13 @@ bool privatemsg(User &receiver, std::string &msg, Server &myServer){
     }
     std::string sender = ft_split(msg, ' ')[0];
     Channel* myChan = myServer.getChannelByName(sender);
-    if (myChan){
+    if (myChan ){
         myChan->sendToAllUnless(nicknameUsername(receiver) + std::string(" PRIVMSG ") + msg + std::string("\n"), receiver);
         return true;
     }
     else {
         User* use = myServer.getUserByName(sender);
-        if (use){
+        if (use && myServer.IsInTheSameChannel(&receiver, use)){
             use->sendMsg(nicknameUsername(receiver) + std::string(" PRIVMSG ") + msg + std::string("\n"));
             return true;
         }
@@ -173,7 +173,7 @@ bool kick(User &receiver, std::string &msg, Server &myServer){
 }
 
 bool joinChannel(User &receiver, std::string &msg, Server &myServer){
-        myServer.Show();
+    myServer.Show();
     if (!receiver.completed)
     {
         std::cout << "Not completed" << std::endl;
