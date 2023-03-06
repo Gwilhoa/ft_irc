@@ -18,6 +18,7 @@ class User;
 Channel::Channel(const std::string &name) : _name(name)
 {
     _users = std::map<User, bool>();
+    TOPIC = "default";
 }
 
 Channel::Channel(const Channel &c)
@@ -32,6 +33,7 @@ Channel & Channel::operator=(const Channel &c)
 {
     _name = c._name;
     _users = c._users;
+    TOPIC = c.TOPIC;
     return (*this);
 }
 

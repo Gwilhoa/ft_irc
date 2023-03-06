@@ -208,6 +208,14 @@ bool topic(User &receiver, std::string &msg, Server &myServer){
 
 }
 
+bool name(User &receiver, std::string &msg, Server &myServer) {
+    if (!receiver.completed)
+    {
+        std::cout << "Not completed" << std::endl;
+        return false;
+    }
+}
+
 
 bool list(User &receiver, std::string &msg, Server &myServer) {
     if (!receiver.completed)
@@ -217,10 +225,16 @@ bool list(User &receiver, std::string &msg, Server &myServer) {
     }
     (void) msg;
     std::vector<Channel> lsChannel = myServer.getChannels();
+    std::string numeric = "321 ";
+    receiver.sendMsg(/*std::string(":AbbY.MindForge.org") +*/ numeric + receiver.getNickname() + std::string(" END\n"));
     for (std::vector<Channel>::iterator it = lsChannel.begin(); it != lsChannel.end(); it ++) {
+  
+        numeric = "322 ";
+        receiver.sendMsg(/*std::string(":AbbY.MindForge.org") +*/ numeric + receiver.getNickname() + std::string(" ") + it->getName() + std::string(" ") + intToString(it->getUsers().size()) + std::string(" ") + it->TOPIC + std::string("\n"));
         //std::atoi()
-        receiver.sendMsg(it->getName() + std::string(" ") + intToString(it->getUsers().size()) + std::string(" ") + it->TOPIC);
     }
+    numeric = "323 ";
+    receiver.sendMsg(/*std::string(":AbbY.MindForge.org") +*/ numeric + receiver.getNickname() + std::string(" END\n"));
     return true;
 }
 
