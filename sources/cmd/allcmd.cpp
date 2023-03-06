@@ -32,7 +32,6 @@ std::string nicknameUsername(User &user)
 bool nick(User &user, std::string &name, Server &myServer){
     if (name.find("#") == 0){
         std::cout << "[NICK] Error syntaxe nickname must no begin by '#'" << std::endl;
-        user.sendMsg("ERROR :Nickname must no begin by '#'");
         return false;
     }
     (void)myServer;
@@ -43,7 +42,7 @@ bool nick(User &user, std::string &name, Server &myServer){
 
 bool pass(User &user, std::string &pass, Server &myServer){
     if (pass != myServer.getPassword()) {
-        user.sendMsg("ERROR :Password is not correct");
+        std::cout << "[PASS] Error password is not correct" << std::endl;
         myServer.quit(user);
         return false;
     }
@@ -53,7 +52,7 @@ bool pass(User &user, std::string &pass, Server &myServer){
 
 bool user(User &user, std::string &name, Server &myServer){
     if (name.find("#") == 0){
-        std::cout << "Error syntax" << std::endl;
+        std::cout << "[NICK] Error syntaxe nickname must no begin by '#'" << std::endl;
         return false;
     }
     
@@ -61,7 +60,6 @@ bool user(User &user, std::string &name, Server &myServer){
     std::vector<std::string> split = ft_split(name, ' ');
     if (split.size() == 4) {
         return (user.setUsername(split[3].substr(1)));
-         //myServer.SendToAllWith(nicknameUsername(user) + std::string(" NICK ") + name + std::string("\n"), user);
     }
     return false;
 }
@@ -91,7 +89,7 @@ bool part(User &user, std::string &args, Server &myServer){
 bool privatemsg(User &receiver, std::string &msg, Server &myServer){
     if (!receiver.completed)
     {
-        std::cout << "Not completed" << std::endl;
+        std::cout << receiver.getFd() << " USER invalid" << std::endl;
         return false;
     }
     std::string sender = ft_split(msg, ' ')[0];
@@ -155,7 +153,7 @@ bool ping(User &receiver, std::string &msg, Server &myServer){
 bool kick(User &receiver, std::string &msg, Server &myServer){
     if (!receiver.completed)
     {
-        std::cout << "Not completed" << std::endl;
+        std::cout << receiver.getFd() << " USER invalid" << std::endl;
         return false;
     }
     (void)receiver;
@@ -175,7 +173,7 @@ bool kick(User &receiver, std::string &msg, Server &myServer){
 
 bool invite(User &receiver, std::string &msg, Server &myServer) {
     if (!receiver.completed) {
-        std::cout << "Not completed" << std::endl;
+        std::cout << receiver.getFd() << " USER invalid" << std::endl;
         return false;
     }
     std::vector<std::string> Command = ft_split(msg, ' ');
@@ -194,7 +192,7 @@ bool invite(User &receiver, std::string &msg, Server &myServer) {
 bool topic(User &receiver, std::string &msg, Server &myServer){
     if (!receiver.completed)
     {
-        std::cout << "Not completed" << std::endl;
+        std::cout << receiver.getFd() << " USER invalid" << std::endl;
         return false;
     }
     std::vector<std::string> Command = ft_split(msg, ' ');
@@ -242,11 +240,11 @@ bool joinChannel(User &receiver, std::string &msg, Server &myServer){
     myServer.Show();
     if (!receiver.completed)
     {
-        std::cout << "Not completed" << std::endl;
+        std::cout << receiver.getFd() << " USER invalid" << std::endl;
         return false;
     }
     if (msg.find("#") != 0){
-        std::cout << "Error syntax" << std::endl;
+        std::cout << "[JOIN] ChannelName must begin by '#'" << std::endl;
         return false;
     }
     Channel *myChan = (myServer.getChannelByName(msg));
@@ -273,6 +271,8 @@ void parseCommand(User &receiver, std::string &receivedMessage, Server &myServer
     while (receivedMessage.find('\r') != std::string::npos)
         receivedMessage.erase(receivedMessage.find('\r'), 1);
     std::vector<std::string> Command = ft_split(receivedMessage, '\n');
+    if (receivedMessage == "\n")
+        return;
     for (std::vector<std::string>::iterator it = Command.begin(); it != Command.end(); it++){
         execCommand(receiver, *it, myServer);
     }
@@ -298,9 +298,9 @@ void execCommand(User &receiver, std::string &mystring, Server &myServer){
     CommandList["WHO"] = who;
     CommandList["TOPIC"] = topic;
     CommandList["INVITE"] = invite;
-    std::cout << "fd : " << receiver.getFd() << " execute : " << cmd << " " << args << std::endl;
     if (CommandList.find(cmd) != CommandList.end()){
-           CommandList[cmd](receiver, args, myServer);
+        std::cout << "fd : " << receiver.getFd() << " execute : " << cmd << " " << args << std::endl;
+        CommandList[cmd](receiver, args, myServer);
     }
     else
         receiver.sendMsg("Error " + cmd + " is not a command\n");
