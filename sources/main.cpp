@@ -6,7 +6,7 @@
 /*   By: gchatain <gchatain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:27:39 by gchatain          #+#    #+#             */
-/*   Updated: 2023/03/06 16:03:41 by gchatain         ###   ########.fr       */
+/*   Updated: 2023/03/06 16:31:59 by gchatain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int main(int argc, char *argv[])
                         buffer[n] = '\0';
                         std::string message(buffer);
                         str += message;
-                        std::cout << std::endl;
                         User *user = server.getUSerByFd(server.getPollFds()[i].fd);
                         if (str.find("\r\n") != std::string::npos){
                             if (user == NULL)

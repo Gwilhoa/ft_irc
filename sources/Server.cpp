@@ -6,7 +6,7 @@
 /*   By: gchatain <gchatain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:36:17 by gchatain          #+#    #+#             */
-/*   Updated: 2023/03/06 15:59:11 by gchatain         ###   ########.fr       */
+/*   Updated: 2023/03/06 16:32:32 by gchatain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,14 +190,11 @@ User* Server::getUserByName(std::string str){
 }
 
 User *Server::getUSerByFd(int fd) {
-	std::cout << "fd take is " << fd ;
     for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it ++){
         if (fd == it->getFd()) {
-			std::cout << " (" << it->getNickname() << ")" << std::endl;
             return &*it;
 		}
     }
-	std::cout << std::endl;
     return NULL;
 }
 

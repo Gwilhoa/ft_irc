@@ -6,7 +6,7 @@
 /*   By: gchatain <gchatain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:36:25 by gchatain          #+#    #+#             */
-/*   Updated: 2023/03/06 14:25:17 by gchatain         ###   ########.fr       */
+/*   Updated: 2023/03/06 16:39:41 by gchatain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ struct pollfd User::getpollfd() const
 
 void User::sendMsg(const std::string& msg) const
 {
-    std::cout << "Send to " << this->_fd << " (" << getNickname() << ")" " : [" << msg << "]" << std::endl;
+    std::cout << "Send to " << this->_fd << " (" << getNickname() << ")" " : "<< msg  << std::endl;
     send(this->_fd, msg.c_str(), msg.size(), 0);
 }
 
