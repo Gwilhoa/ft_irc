@@ -172,6 +172,41 @@ bool kick(User &receiver, std::string &msg, Server &myServer){
     return false;
 }
 
+bool invite(User &receiver, std::string &msg, Server &myServer) {
+    if (!receiver.completed) {
+        std::cout << "Not completed" << std::endl;
+        return false;
+    }
+    std::vector<std::string> Command = ft_split(msg, ' ');
+    User* user = myServer.getUserByName(Command[0]);
+    if (user && myServer.IsInTheSameChannel(user, &receiver)) {
+        Channel *Chan = myServer.getChannelByName(Command[1]);
+        if (Chan && Chan->is_op(receiver) && !Chan->haveUser(*user)) {
+            Chan->addUser(*user);
+            Chan->sendToAll(nicknameUsername(*user) + std::string(" JOIN :") + Command[1] + std::string("\n"));
+            return true;
+        }
+    }
+    return false;
+}
+
+bool topic(User &receiver, std::string &msg, Server &myServer){
+    if (!receiver.completed)
+    {
+        std::cout << "Not completed" << std::endl;
+        return false;
+    }
+    std::vector<std::string> Command = ft_split(msg, ' ');
+    Channel* Chan = myServer.getChannelByName(Command[0]);
+    if (Command.size() == 2 && Chan && Chan->is_op(receiver)){
+        Chan->TOPIC = Command[1];
+        Chan->sendToAll(nicknameUsername(receiver) + std::string(" TOPIC ") + msg + std::string("\n"));
+        return true;
+    }
+    return false;
+
+}
+
 bool joinChannel(User &receiver, std::string &msg, Server &myServer){
     myServer.Show();
     if (!receiver.completed)
@@ -227,6 +262,8 @@ void execCommand(User &receiver, std::string &mystring, Server &myServer){
     CommandList["PASS"] = pass;
     CommandList["CAP"] = cap;
     CommandList["WHO"] = who;
+    CommandList["TOPIC"] = topic;
+    CommandList["INVITE"] = invite;
 
     std::cout << (std::string("Command [") + cmd + std::string("] and "));
 
