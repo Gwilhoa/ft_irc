@@ -265,18 +265,9 @@ void execCommand(User &receiver, std::string &mystring, Server &myServer){
     CommandList["PASS"] = pass;
     CommandList["CAP"] = cap;
     CommandList["WHO"] = who;
-<<<<<<< HEAD
-    std::cout << "fd : " << receiver.getFd() << " execute : " << cmd << " " << args << std::endl;
-=======
     CommandList["TOPIC"] = topic;
     CommandList["INVITE"] = invite;
-
-    std::cout << (std::string("Command [") + cmd + std::string("] and "));
-
-    if (args.find('\r') != std::string::npos)
-        args.erase(args.find('\r'), 1);
-    std::cout << (std::string("args : [") + args + std::string("]\n"));
->>>>>>> 4c64958faa232f6161de03a0252490773c6882be
+    std::cout << "fd : " << receiver.getFd() << " execute : " << cmd << " " << args << std::endl;
     if (CommandList.find(cmd) != CommandList.end()){
            CommandList[cmd](receiver, args, myServer);
     }
