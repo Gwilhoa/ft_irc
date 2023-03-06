@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_irc.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gchatain <gchatain@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: gchatain <gchatain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:35:54 by gchatain          #+#    #+#             */
-/*   Updated: 2023/02/22 14:35:55 by gchatain         ###   ########.fr       */
+/*   Updated: 2023/03/06 14:26:39 by gchatain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <map>
 # include <poll.h>
 # include <vector>
+# include <unistd.h>
 
 
 class Server;
@@ -30,6 +31,7 @@ class User;
 # include "User.hpp"
 # include "Channel.hpp"
 # include "Server.hpp"
+
 
 
 

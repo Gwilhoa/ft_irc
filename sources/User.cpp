@@ -3,38 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gchatain <gchatain@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: gchatain <gchatain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:36:25 by gchatain          #+#    #+#             */
-/*   Updated: 2023/02/22 14:36:26 by gchatain         ###   ########.fr       */
+/*   Updated: 2023/03/06 14:25:17 by gchatain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
-#include <string>
-#include "../includes/User.hpp"
+#include "ft_irc.hpp"
 
-/*User::User()
-{
 
-}*/
 
 User::User(int fd, struct sockaddr_in addr) :
  _fd(fd), _port(addr.sin_port), _addr(addr.sin_addr.s_addr)
 {
-    //_username = std::string("Guest"+fd);
-    //_nickname = std::string("Guest"+fd);
     haveNick = false;
     havePass = false;
     haveUser = false;
     completed = true;
 }
 
-User::User(const User &c) : _fd(c._fd), _port(c._port), _addr(c._addr), _nickname(c._nickname),
-haveNick(c.haveNick), havePass(c.havePass), haveUser(c.haveUser) , completed(c.completed)
+User::User(const User &c)
 {
-	//*this = c;
+	*this = c;
 }
 
 User::~User()
@@ -106,8 +99,3 @@ void User::setNickname(std::string &newName)
 bool User::operator==(const User &rhs) const {
     return _fd == rhs._fd;
 }
-
-
-/*bool User::PassValid(std::string str, Server &server) {
-	return (str == server.getPassword());
-}*/

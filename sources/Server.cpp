@@ -3,19 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guilheimchataing <guilheimchataing@stud    +#+  +:+       +#+        */
+/*   By: gchatain <gchatain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:36:17 by gchatain          #+#    #+#             */
-/*   Updated: 2023/02/25 11:22:47 by guilheimcha      ###   ########lyon.fr   */
+/*   Updated: 2023/03/06 14:24:59 by gchatain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
-#include <unistd.h>
-#include "../includes/Server.hpp"
-#include "../includes/User.hpp"
-#include "../includes/Channel.hpp"
+#include "ft_irc.hpp"
+
 
 class Channel;
 Server::Server() : _port(), _server_fd()
@@ -113,7 +111,6 @@ Channel* Server::getChannel(std::string name)
 std::vector<struct pollfd> Server::getPollFds()
 {
 	std::vector<struct pollfd> fds((_connected_users.size() + 2));
-    //struct pollfd *fds = (struct pollfd *)malloc(sizeof (struct pollfd) * (_connected_users.size() + 2));
     int i = 0;
     fds[i].fd = _server_fd;
     fds[i].events = POLLIN;
@@ -140,7 +137,7 @@ Channel *Server::getChannelByName(const std::string &name) {
 }
 
 Channel *Server::addChannel(const std::string name) {
-	Channel	newchan(name, this);
+	Channel	newchan(name);
     _channels.push_back(newchan);
 	return &(_channels.back());
 }
@@ -224,7 +221,6 @@ void Server::Show(){
 	ShowChan();
 	std::cout << std::endl;
 	ShowUser();
-	//	std::cout << ">> END OF SHOW" << std::endl;
 }
 
 

@@ -9,7 +9,7 @@ INC_LST		:= ft_irc.hpp Server.hpp User.hpp Channel.hpp
 INC_FILE	:= includes
 
 CC			:= c++
-FLAGS		:= -std=c++98 -g3 -fsanitize=address -Wall -Werror -Wextra
+FLAGS		:= -std=c++98 -g3 -fsanitize=address -Wall -Wextra -Werror
 RM			:= rm -rf
 
 OBJS_LST	:= $(SRCS_LST:.cpp=.o)
@@ -24,7 +24,7 @@ INCS		:= $(addprefix $(INC_FILE)/,$(INC_LST))
 all:		$(NAME)
 
 $(OBJS_FILE)/%.o : $(SRCS_FILE)/%.cpp $(INCS) | $(OBJS_FILE)
-				$(CC) $(FLAGS) -c $< -o $@ $(INC_FILE)
+				$(CC) $(FLAGS) -c $< -o $@ -I$(INC_FILE)
 
 
 $(NAME) :	$(OBJS) Makefile $(INCS)

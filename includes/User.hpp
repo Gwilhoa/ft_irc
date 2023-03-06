@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gchatain <gchatain@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: gchatain <gchatain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:36:06 by gchatain          #+#    #+#             */
-/*   Updated: 2023/02/22 14:36:07 by gchatain         ###   ########.fr       */
+/*   Updated: 2023/03/06 14:24:23 by gchatain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 #ifndef User_HPP
 # define User_HPP
-# include "../includes/ft_irc.hpp"
-# include "../includes/Channel.hpp"
-# include "../includes/Server.hpp"
+#include "ft_irc.hpp"
 
 class User
 {
