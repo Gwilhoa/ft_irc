@@ -31,7 +31,8 @@ std::string nicknameUsername(User &user)
 
 bool nick(User &user, std::string &name, Server &myServer){
     if (name.find("#") == 0){
-        std::cout << "Error syntax" << std::endl;
+        std::cout << "[NICK] Error syntaxe nickname must no begin by '#'" << std::endl;
+        user.sendMsg("ERROR :Nickname must no begin by '#'");
         return false;
     }
     (void)myServer;
@@ -204,6 +205,8 @@ bool cap(User &receiver, std::string &msg, Server &myServer){
 }
 
 void parseCommand(User &receiver, std::string &receivedMessage, Server &myServer){
+    while (receivedMessage.find('\r') != std::string::npos)
+        receivedMessage.erase(receivedMessage.find('\r'), 1);
     std::vector<std::string> Command = ft_split(receivedMessage, '\n');
     for (std::vector<std::string>::iterator it = Command.begin(); it != Command.end(); it++){
         execCommand(receiver, *it, myServer);
@@ -227,12 +230,7 @@ void execCommand(User &receiver, std::string &mystring, Server &myServer){
     CommandList["PASS"] = pass;
     CommandList["CAP"] = cap;
     CommandList["WHO"] = who;
-
-    std::cout << (std::string("Command [") + cmd + std::string("] and "));
-
-    if (args.find('\r') != std::string::npos)
-        args.erase(args.find('\r'), 1);
-    std::cout << (std::string("args : [") + args + std::string("]\n"));
+    std::cout << "fd : " << receiver.getFd() << " execute : " << cmd << " " << args << std::endl;
     if (CommandList.find(cmd) != CommandList.end()){
            CommandList[cmd](receiver, args, myServer);
     }
