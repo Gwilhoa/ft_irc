@@ -38,7 +38,7 @@ $(OBJS_FILE):
 				mkdir $(OBJS_FILE)
 				mkdir $(OBJS_FILE)/cmd
 
-bot :
+bot : bonus/bot.cpp
 	$(CC) $(FLAGS) -o bot bonus/bot.cpp -I$(INC_FILE)
 
 bonus	:	all bot
