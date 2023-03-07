@@ -52,9 +52,9 @@ int main(int argc, char **argv){
         return 1;
     }
     std::cout << "Bot connected to server" << std::endl;
+    send_message(bot_fd, "NICK bot\r\n");
     send_message(bot_fd, std::string("PASS " + password + "\r\n"));
     send_message(bot_fd, "USER bot 0 * :bot\r\n");
-    send_message(bot_fd, "NICK bot\r\n");
     send_message(bot_fd, "JOIN #bot\r\n");
     while (1) {
         pollfd bot = {};

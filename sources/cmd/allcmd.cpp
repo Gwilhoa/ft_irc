@@ -34,6 +34,10 @@ bool nick(User &user, std::string &name, Server &myServer){
         std::cout << "[NICK] Error syntaxe nickname must no begin by '#'" << std::endl;
         return false;
     }
+    if (myServer.haveNickname(name) == true){
+        std::cout << "[NICK] Error nickname already set" << std::endl;
+        return false;
+    }
     (void)myServer;
     myServer.SendToAllWith(nicknameUsername(user) + std::string(" NICK ") + name + std::string("\n"), user);
     user.setNickname(name);

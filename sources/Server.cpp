@@ -277,3 +277,13 @@ void Server::SendToAllWith(std::string str, User& myUse){
 		}
 	}
 }
+
+
+bool Server::haveNickname(std::string nickname) {
+    for (std::vector<User>::iterator it = _connected_users.begin(); it != _connected_users.end(); it++)
+    {
+        if (it->getNickname() == nickname)
+            return true;
+    }
+    return false;
+}

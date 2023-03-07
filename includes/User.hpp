@@ -73,6 +73,7 @@ class User
 
 		void validPass(){
 			havePass = true;
+            checkAll();
 		}
 
 		void Show(){

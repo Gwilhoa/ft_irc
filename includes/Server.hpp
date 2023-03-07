@@ -60,6 +60,7 @@ class Server
 		void ShowChan();
 		void ShowUser();
 		bool IsInTheSameChannel(User* user1, User* user2);
+        bool haveNickname(std::string nickname);
 };
 #endif
 
