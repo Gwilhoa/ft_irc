@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
                 i++;
             }
         }
+        std::cout << "end of loop" << std::endl;
 	} else {
 		std::cout << "usage ./ft_irc [port] [password]" << std::endl;
 	}

@@ -93,10 +93,15 @@ int Server::accept_connexion(){
 
 int Server::disconnectUser(int fd)
 {
+    std::cout << "Disconnecting user " << fd << std::endl;
 	for (size_t i = 0; i < _connected_users.size(); i++)
     {
         if (_connected_users[i].getFd() == fd)
         {
+            for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
+            {
+                it->removeUser(_connected_users[i]);
+            }
             _connected_users.erase(_connected_users.begin() + i);
             return 0;
         }

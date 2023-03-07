@@ -46,6 +46,7 @@ bool pass(User &user, std::string &pass, Server &myServer){
         myServer.quit(user);
         return false;
     }
+    std::cout << "[PASS] Password is correct" << std::endl;
     user.validPass();
     return true;
 }
@@ -204,14 +205,6 @@ bool topic(User &receiver, std::string &msg, Server &myServer){
     }
     return false;
 
-}
-
-bool name(User &receiver, std::string &msg, Server &myServer) {
-    if (!receiver.completed)
-    {
-        std::cout << "Not completed" << std::endl;
-        return false;
-    }
 }
 
 

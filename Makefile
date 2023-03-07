@@ -9,7 +9,7 @@ INC_LST		:= ft_irc.hpp Server.hpp User.hpp Channel.hpp
 INC_FILE	:= includes
 
 CC			:= c++
-FLAGS		:= -std=c++98 -g3 -fsanitize=address -Wall -Wextra -Werror
+FLAGS		:= -std=c++98 -Wall -Wextra -Werror
 RM			:= rm -rf
 
 OBJS_LST	:= $(SRCS_LST:.cpp=.o)
@@ -33,10 +33,16 @@ clean	:
 				$(RM) $(OBJS_FILE)
 fclean	:	clean
 				$(RM) $(NAME)
+				$(RM) bot
 $(OBJS_FILE):
 				mkdir $(OBJS_FILE)
 				mkdir $(OBJS_FILE)/cmd
 
+bot :
+	$(CC) $(FLAGS) -o bot bonus/bot.cpp -I$(INC_FILE)
+
+bonus	:	all bot
+
 re		:	fclean all
 
-.PHONY	:	all clean fclean re
+.PHONY	:	all clean fclean re bonus
